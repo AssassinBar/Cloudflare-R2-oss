@@ -199,6 +199,7 @@ import {
   blobDigest,
   multipartUpload,
   SIZE_LIMIT,
+  writeItemUrl,
 } from "/assets/main.mjs";
 import Dialog from "./Dialog.vue";
 import Menu from "./Menu.vue";
@@ -218,6 +219,7 @@ export default {
     showContextMenu: false,
     showMenu: false,
     showUploadPopup: false,
+    uploading: false,
     uploadProgress: null,
     uploadQueue: [],
   }),
@@ -249,7 +251,7 @@ export default {
     },
 
     async copyPaste(source, target) {
-      const uploadUrl = `/api/write/items/${target}`;
+      const uploadUrl = writeItemUrl(target);
       await axios.put(uploadUrl, "", {
         headers: { "x-amz-copy-source": encodeURIComponent(source) },
       });
@@ -260,7 +262,7 @@ export default {
         const folderName = window.prompt("请输入文件夹名称");
         if (!folderName) return;
         this.showUploadPopup = false;
-        const uploadUrl = `/api/write/items/${this.cwd}${folderName}/_$folder$`;
+        const uploadUrl = writeItemUrl(`${this.cwd}${folderName}/_$folder$`);
         await axios.put(uploadUrl, "");
         this.fetchFiles();
       } catch (error) {
@@ -362,11 +364,12 @@ export default {
       if (!this.uploadQueue.length) {
         this.fetchFiles();
         this.uploadProgress = null;
+        this.uploading = false;
         return;
       }
 
       /** @type File **/
-      const { basedir, file } = this.uploadQueue.pop(0);
+      const { basedir, file } = this.uploadQueue.shift();
       let thumbnailDigest = null;
 
       if (file.type.startsWith("image/") || file.type === "video/mp4") {
@@ -374,7 +377,9 @@ export default {
           const thumbnailBlob = await generateThumbnail(file);
           const digestHex = await blobDigest(thumbnailBlob);
 
-          const thumbnailUploadUrl = `/api/write/items/_$flaredrive$/thumbnails/${digestHex}.png`;
+          const thumbnailUploadUrl = writeItemUrl(
+            `_$flaredrive$/thumbnails/${digestHex}.png`
+          );
           try {
             await axios.put(thumbnailUploadUrl, thumbnailBlob);
             thumbnailDigest = digestHex;
@@ -392,7 +397,7 @@ export default {
       }
 
       try {
-        const uploadUrl = `/api/write/items/${basedir}${file.name}`;
+        const uploadUrl = writeItemUrl(`${basedir}${file.name}`);
         const headers = {};
         const onUploadProgress = (progressEvent) => {
           var percentCompleted =
@@ -416,12 +421,12 @@ export default {
           .catch(() => {});
         console.log(`Upload ${file.name} failed`, error);
       }
-      setTimeout(this.processUploadQueue);
+      setTimeout(() => this.processUploadQueue());
     },
 
     async removeFile(key) {
       if (!window.confirm(`确定要删除 ${key} 吗？`)) return;
-      await axios.delete(`/api/write/items/${key}`);
+      await axios.delete(writeItemUrl(key));
       this.fetchFiles();
     },
 
@@ -441,7 +446,10 @@ export default {
         file,
       }));
       this.uploadQueue.push(...uploadTasks);
-      setTimeout(() => this.processUploadQueue());
+      if (!this.uploading) {
+        this.uploading = true;
+        setTimeout(() => this.processUploadQueue());
+      }
     },
   },
 
