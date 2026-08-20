@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000010000000000000001 /* CryptoLedgerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000001 /* CryptoLedgerApp.swift */; };
+		A10000010000000000000002 /* LiquidGlassTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* LiquidGlassTheme.swift */; };
+		A10000010000000000000003 /* GlassModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* GlassModifiers.swift */; };
+		A10000010000000000000004 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* User.swift */; };
+		A10000010000000000000005 /* TradeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000005 /* TradeRecord.swift */; };
+		A10000010000000000000006 /* CryptoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000006 /* CryptoAsset.swift */; };
+		A10000010000000000000007 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* AuthService.swift */; };
+		A10000010000000000000008 /* TradeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* TradeStore.swift */; };
+		A10000010000000000000009 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000009 /* NotificationManager.swift */; };
+		A10000010000000000000010 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000010 /* GlassCard.swift */; };
+		A10000010000000000000011 /* PnLChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000011 /* PnLChartView.swift */; };
+		A10000010000000000000012 /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000012 /* FloatingTabBar.swift */; };
+		A10000010000000000000013 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000013 /* LoginView.swift */; };
+		A10000010000000000000014 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000014 /* DashboardView.swift */; };
+		A10000010000000000000015 /* TradeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000015 /* TradeListView.swift */; };
+		A10000010000000000000016 /* AddTradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000016 /* AddTradeView.swift */; };
+		A10000010000000000000017 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000017 /* NotificationsView.swift */; };
+		A10000010000000000000018 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000018 /* ProfileView.swift */; };
+		A10000010000000000000019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000019 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000010000000000000001 /* CryptoLedgerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoLedgerApp.swift; sourceTree = "<group>"; };
+		A20000010000000000000002 /* LiquidGlassTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassTheme.swift; sourceTree = "<group>"; };
+		A20000010000000000000003 /* GlassModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifiers.swift; sourceTree = "<group>"; };
+		A20000010000000000000004 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A20000010000000000000005 /* TradeRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeRecord.swift; sourceTree = "<group>"; };
+		A20000010000000000000006 /* CryptoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAsset.swift; sourceTree = "<group>"; };
+		A20000010000000000000007 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		A20000010000000000000008 /* TradeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeStore.swift; sourceTree = "<group>"; };
+		A20000010000000000000009 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A20000010000000000000010 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
+		A20000010000000000000011 /* PnLChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PnLChartView.swift; sourceTree = "<group>"; };
+		A20000010000000000000012 /* FloatingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBar.swift; sourceTree = "<group>"; };
+		A20000010000000000000013 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A20000010000000000000014 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A20000010000000000000015 /* TradeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeListView.swift; sourceTree = "<group>"; };
+		A20000010000000000000016 /* AddTradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTradeView.swift; sourceTree = "<group>"; };
+		A20000010000000000000017 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		A20000010000000000000018 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A20000010000000000000019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000010000000000000020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A30000010000000000000001 /* CryptoLedger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoLedger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A40000010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A50000010000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A50000010000000000000002 /* CryptoLedger */,
+				A50000010000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A50000010000000000000002 /* CryptoLedger */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000001 /* CryptoLedgerApp.swift */,
+				A50000010000000000000004 /* Theme */,
+				A50000010000000000000005 /* Models */,
+				A50000010000000000000006 /* Services */,
+				A50000010000000000000007 /* Components */,
+				A50000010000000000000008 /* Views */,
+				A20000010000000000000019 /* Assets.xcassets */,
+				A20000010000000000000020 /* Info.plist */,
+			);
+			path = CryptoLedger;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A30000010000000000000001 /* CryptoLedger.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000004 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000002 /* LiquidGlassTheme.swift */,
+				A20000010000000000000003 /* GlassModifiers.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000004 /* User.swift */,
+				A20000010000000000000005 /* TradeRecord.swift */,
+				A20000010000000000000006 /* CryptoAsset.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000007 /* AuthService.swift */,
+				A20000010000000000000008 /* TradeStore.swift */,
+				A20000010000000000000009 /* NotificationManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000007 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000010 /* GlassCard.swift */,
+				A20000010000000000000011 /* PnLChartView.swift */,
+				A20000010000000000000012 /* FloatingTabBar.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000008 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A50000010000000000000009 /* Auth */,
+				A50000010000000000000010 /* Dashboard */,
+				A50000010000000000000011 /* Trades */,
+				A50000010000000000000012 /* Profile */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000009 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000013 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000010 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000014 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000011 /* Trades */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000015 /* TradeListView.swift */,
+				A20000010000000000000016 /* AddTradeView.swift */,
+			);
+			path = Trades;
+			sourceTree = "<group>";
+		};
+		A50000010000000000000012 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000017 /* NotificationsView.swift */,
+				A20000010000000000000018 /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A60000010000000000000001 /* CryptoLedger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80000010000000000000003 /* Build configuration list for PBXNativeTarget "CryptoLedger" */;
+			buildPhases = (
+				A60000010000000000000002 /* Sources */,
+				A40000010000000000000001 /* Frameworks */,
+				A60000010000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CryptoLedger;
+			productName = CryptoLedger;
+			productReference = A30000010000000000000001 /* CryptoLedger.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A70000010000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A60000010000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A80000010000000000000001 /* Build configuration list for PBXProject "CryptoLedger" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = A50000010000000000000001;
+			productRefGroup = A50000010000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A60000010000000000000001 /* CryptoLedger */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000010000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000010000000000000019 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000010000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000010000000000000001 /* CryptoLedgerApp.swift in Sources */,
+				A10000010000000000000002 /* LiquidGlassTheme.swift in Sources */,
+				A10000010000000000000003 /* GlassModifiers.swift in Sources */,
+				A10000010000000000000004 /* User.swift in Sources */,
+				A10000010000000000000005 /* TradeRecord.swift in Sources */,
+				A10000010000000000000006 /* CryptoAsset.swift in Sources */,
+				A10000010000000000000007 /* AuthService.swift in Sources */,
+				A10000010000000000000008 /* TradeStore.swift in Sources */,
+				A10000010000000000000009 /* NotificationManager.swift in Sources */,
+				A10000010000000000000010 /* GlassCard.swift in Sources */,
+				A10000010000000000000011 /* PnLChartView.swift in Sources */,
+				A10000010000000000000012 /* FloatingTabBar.swift in Sources */,
+				A10000010000000000000013 /* LoginView.swift in Sources */,
+				A10000010000000000000014 /* DashboardView.swift in Sources */,
+				A10000010000000000000015 /* TradeListView.swift in Sources */,
+				A10000010000000000000016 /* AddTradeView.swift in Sources */,
+				A10000010000000000000017 /* NotificationsView.swift in Sources */,
+				A10000010000000000000018 /* ProfileView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A90000010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A90000010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A90000010000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CryptoLedger/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoledger.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A90000010000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CryptoLedger/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoledger.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80000010000000000000001 /* Build configuration list for PBXProject "CryptoLedger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A90000010000000000000001 /* Debug */,
+				A90000010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80000010000000000000003 /* Build configuration list for PBXNativeTarget "CryptoLedger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A90000010000000000000003 /* Debug */,
+				A90000010000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A70000010000000000000001 /* Project object */;
+}
