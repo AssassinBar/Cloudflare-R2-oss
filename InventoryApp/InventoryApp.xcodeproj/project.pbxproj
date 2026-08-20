@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34DB15CDAEBD400AA9D5EDF5 /* InventoryAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5EFE4ADD494000AA24EB69 /* InventoryAppApp.swift */; };
+		BA129273F14C44BAB32CA46F /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69D71FC90FE421CB44E2E0F /* RootTabView.swift */; };
+		9C0607F8540C4DF5A2A99CB5 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090F24FDA39A483AB9743777 /* Animations.swift */; };
+		2946137C40864F2DBC639863 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA911AF202974C5E96E0732E /* Components.swift */; };
+		BA48AF7FEBD148B3BCBAB2CD /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AFA4CAD81433FA534157F /* Formatters.swift */; };
+		1D4200701B2548F0948DE318 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB92C8BC34BF4EED998FD6E0 /* Theme.swift */; };
+		150F403F233F41FF8D767520 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5FAD721614524BC4DC012 /* Models.swift */; };
+		DEB4F6C2867E44E2825D26A1 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB7704F3BD24DD9A6404A7F /* APIClient.swift */; };
+		7B1B5E9488C14350A238001C /* InventoryServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD460D1E33B494C9EC77FDB /* InventoryServicing.swift */; };
+		886A3BD4A79E4BDEBFE74CA9 /* MockInventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BB3E05D1D4A259C28A32B /* MockInventoryService.swift */; };
+		C7CCEA0D7E75482EA0401368 /* RemoteInventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC81E7111364B5BAC589D40 /* RemoteInventoryService.swift */; };
+		EF5595AD0AFC4A8BB1742066 /* ViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7770AEF889E94BE3883DEC44 /* ViewModels.swift */; };
+		BCB104B6DB804B77BD84DA56 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234E27D332584737A3DD34E4 /* DashboardView.swift */; };
+		57743F426DAE45CB8A868683 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BB5423EE9F4F0DA6C96485 /* InventoryView.swift */; };
+		987A023BE1284D9B8B503524 /* PartnersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D626E07CAC4E2692628EE2 /* PartnersView.swift */; };
+		B47EC689A2624CC08FF72F58 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33BB84D9F7D44FCA7931737 /* ProductsView.swift */; };
+		E0C9BB5D80B24C16AFF46284 /* PurchasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A5D0520D2E4CACA0AEBA43 /* PurchasesView.swift */; };
+		43B81BFF53624104B7B7A3DD /* SalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A707D422B7418FA93A8DF0 /* SalesView.swift */; };
+		8A6125B436E948B2A1B63F87 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91551B31496F408E87C04FDD /* SettingsView.swift */; };
+		36D9E4E733E74DE88B0C7D3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8D393451E174CB3B0F18C16 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F65BF94C041C429EAC375F30 /* InventoryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InventoryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC5EFE4ADD494000AA24EB69 /* InventoryAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAppApp.swift; sourceTree = "<group>"; };
+		D69D71FC90FE421CB44E2E0F /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		090F24FDA39A483AB9743777 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		AA911AF202974C5E96E0732E /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		B88AFA4CAD81433FA534157F /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		DB92C8BC34BF4EED998FD6E0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		0BE5FAD721614524BC4DC012 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		BBB7704F3BD24DD9A6404A7F /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		FDD460D1E33B494C9EC77FDB /* InventoryServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryServicing.swift; sourceTree = "<group>"; };
+		7F5BB3E05D1D4A259C28A32B /* MockInventoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockInventoryService.swift; sourceTree = "<group>"; };
+		DCC81E7111364B5BAC589D40 /* RemoteInventoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteInventoryService.swift; sourceTree = "<group>"; };
+		7770AEF889E94BE3883DEC44 /* ViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels.swift; sourceTree = "<group>"; };
+		234E27D332584737A3DD34E4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		C6BB5423EE9F4F0DA6C96485 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
+		88D626E07CAC4E2692628EE2 /* PartnersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnersView.swift; sourceTree = "<group>"; };
+		D33BB84D9F7D44FCA7931737 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
+		77A5D0520D2E4CACA0AEBA43 /* PurchasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesView.swift; sourceTree = "<group>"; };
+		89A707D422B7418FA93A8DF0 /* SalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesView.swift; sourceTree = "<group>"; };
+		91551B31496F408E87C04FDD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A8D393451E174CB3B0F18C16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3FC2123FC26642E3B8D7CDD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7EC2DC0EE5B5443182DCDE3D = {
+			isa = PBXGroup;
+			children = (
+				CAC56DB832AC42F9BCFAB0D2 /* InventoryApp */,
+				61CAE8B5FA6F46B48DD8BA45 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		61CAE8B5FA6F46B48DD8BA45 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F65BF94C041C429EAC375F30 /* InventoryApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CAC56DB832AC42F9BCFAB0D2 /* InventoryApp */ = {
+			isa = PBXGroup;
+			children = (
+				ED25A30FDEAB462B91157EDB /* App */,
+				2367CFA1183B46D7960E5A00 /* Core */,
+				056EE4B22EEF40A18AD0D83D /* Features */,
+				07922C731CDF4A01B6523B5D /* Resources */,
+			);
+			path = InventoryApp;
+			sourceTree = "<group>";
+		};
+		ED25A30FDEAB462B91157EDB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BC5EFE4ADD494000AA24EB69 /* InventoryAppApp.swift */,
+				D69D71FC90FE421CB44E2E0F /* RootTabView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2367CFA1183B46D7960E5A00 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5EB863B41F274D8B8DAF6B27 /* Design */,
+				EF70A04A0C314AC98CCE413A /* Models */,
+				5979FF52FA014089926332F8 /* Networking */,
+				9E1D0A67103249449178D250 /* Services */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		5EB863B41F274D8B8DAF6B27 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				51D17763D5FC442D928B1ED8 /* Components */,
+				090F24FDA39A483AB9743777 /* Animations.swift */,
+				B88AFA4CAD81433FA534157F /* Formatters.swift */,
+				DB92C8BC34BF4EED998FD6E0 /* Theme.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		51D17763D5FC442D928B1ED8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AA911AF202974C5E96E0732E /* Components.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		EF70A04A0C314AC98CCE413A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0BE5FAD721614524BC4DC012 /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5979FF52FA014089926332F8 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				BBB7704F3BD24DD9A6404A7F /* APIClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		9E1D0A67103249449178D250 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FDD460D1E33B494C9EC77FDB /* InventoryServicing.swift */,
+				7F5BB3E05D1D4A259C28A32B /* MockInventoryService.swift */,
+				DCC81E7111364B5BAC589D40 /* RemoteInventoryService.swift */,
+				7770AEF889E94BE3883DEC44 /* ViewModels.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		056EE4B22EEF40A18AD0D83D /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				0A18B95BDC0248DEBF415435 /* Dashboard */,
+				2B9CEB28E02246AEB1744BC7 /* Inventory */,
+				7467FAF8EDE54340A075D953 /* Partners */,
+				C95CB741C7A0432EA471F929 /* Products */,
+				FE1E951E7AAE44FF8DBF65E0 /* Purchases */,
+				CF22793C2BD648A88160D68C /* Sales */,
+				EE310094263545CEB63D9FB0 /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		0A18B95BDC0248DEBF415435 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				234E27D332584737A3DD34E4 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		2B9CEB28E02246AEB1744BC7 /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				C6BB5423EE9F4F0DA6C96485 /* InventoryView.swift */,
+			);
+			path = Inventory;
+			sourceTree = "<group>";
+		};
+		7467FAF8EDE54340A075D953 /* Partners */ = {
+			isa = PBXGroup;
+			children = (
+				88D626E07CAC4E2692628EE2 /* PartnersView.swift */,
+			);
+			path = Partners;
+			sourceTree = "<group>";
+		};
+		C95CB741C7A0432EA471F929 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D33BB84D9F7D44FCA7931737 /* ProductsView.swift */,
+			);
+			path = Products;
+			sourceTree = "<group>";
+		};
+		FE1E951E7AAE44FF8DBF65E0 /* Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				77A5D0520D2E4CACA0AEBA43 /* PurchasesView.swift */,
+			);
+			path = Purchases;
+			sourceTree = "<group>";
+		};
+		CF22793C2BD648A88160D68C /* Sales */ = {
+			isa = PBXGroup;
+			children = (
+				89A707D422B7418FA93A8DF0 /* SalesView.swift */,
+			);
+			path = Sales;
+			sourceTree = "<group>";
+		};
+		EE310094263545CEB63D9FB0 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				91551B31496F408E87C04FDD /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		07922C731CDF4A01B6523B5D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A8D393451E174CB3B0F18C16 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4DC85D0129CF414C83D18259 /* InventoryApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04F4F12C9FAB4DD2851937B2 /* Build configuration list for PBXNativeTarget "InventoryApp" */;
+			buildPhases = (
+				2BB1E785C29C4E0CA27BFCDA /* Sources */,
+				3FC2123FC26642E3B8D7CDD9 /* Frameworks */,
+				7FC8407350BD47FDBD5FC1D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = InventoryApp;
+			productName = InventoryApp;
+			productReference = F65BF94C041C429EAC375F30 /* InventoryApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B60BF57DF014205987CA386 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					4DC85D0129CF414C83D18259 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 3E8EBC640401462B8A04A7D7 /* Build configuration list for PBXProject "InventoryApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 7EC2DC0EE5B5443182DCDE3D;
+			productRefGroup = 61CAE8B5FA6F46B48DD8BA45 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4DC85D0129CF414C83D18259 /* InventoryApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7FC8407350BD47FDBD5FC1D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36D9E4E733E74DE88B0C7D3D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2BB1E785C29C4E0CA27BFCDA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DB15CDAEBD400AA9D5EDF5 /* InventoryAppApp.swift in Sources */,
+				BA129273F14C44BAB32CA46F /* RootTabView.swift in Sources */,
+				9C0607F8540C4DF5A2A99CB5 /* Animations.swift in Sources */,
+				2946137C40864F2DBC639863 /* Components.swift in Sources */,
+				BA48AF7FEBD148B3BCBAB2CD /* Formatters.swift in Sources */,
+				1D4200701B2548F0948DE318 /* Theme.swift in Sources */,
+				150F403F233F41FF8D767520 /* Models.swift in Sources */,
+				DEB4F6C2867E44E2825D26A1 /* APIClient.swift in Sources */,
+				7B1B5E9488C14350A238001C /* InventoryServicing.swift in Sources */,
+				886A3BD4A79E4BDEBFE74CA9 /* MockInventoryService.swift in Sources */,
+				C7CCEA0D7E75482EA0401368 /* RemoteInventoryService.swift in Sources */,
+				EF5595AD0AFC4A8BB1742066 /* ViewModels.swift in Sources */,
+				BCB104B6DB804B77BD84DA56 /* DashboardView.swift in Sources */,
+				57743F426DAE45CB8A868683 /* InventoryView.swift in Sources */,
+				987A023BE1284D9B8B503524 /* PartnersView.swift in Sources */,
+				B47EC689A2624CC08FF72F58 /* ProductsView.swift in Sources */,
+				E0C9BB5D80B24C16AFF46284 /* PurchasesView.swift in Sources */,
+				43B81BFF53624104B7B7A3DD /* SalesView.swift in Sources */,
+				8A6125B436E948B2A1B63F87 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D456D66DD8D9424AA500D460 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B9E12FD9A1CE4C5592B1AA78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		E562E161E0CE443C8EE82E5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = InventoryApp/Resources/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.InventoryApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4F2DD06C923940F1A0B2910D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = InventoryApp/Resources/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.InventoryApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3E8EBC640401462B8A04A7D7 /* Build configuration list for PBXProject "InventoryApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D456D66DD8D9424AA500D460 /* Debug */,
+				B9E12FD9A1CE4C5592B1AA78 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04F4F12C9FAB4DD2851937B2 /* Build configuration list for PBXNativeTarget "InventoryApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E562E161E0CE443C8EE82E5B /* Debug */,
+				4F2DD06C923940F1A0B2910D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B60BF57DF014205987CA386 /* Project object */;
+}
