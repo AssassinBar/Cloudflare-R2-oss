@@ -1,78 +1,91 @@
 import SwiftUI
 
+/// Quiet luxury palette — graphite, platinum, muted P&L. No neon.
 enum LiquidGlassTheme {
-    static let accentCyan = Color(red: 0.38, green: 0.92, blue: 0.98)
-    static let accentPurple = Color(red: 0.55, green: 0.35, blue: 0.95)
-    static let accentGold = Color(red: 0.95, green: 0.78, blue: 0.35)
-    static let profitGreen = Color(red: 0.25, green: 0.88, blue: 0.55)
-    static let lossRed = Color(red: 0.98, green: 0.35, blue: 0.42)
+    /// Primary interactive accent (platinum)
+    static let accent = Color(red: 0.78, green: 0.80, blue: 0.84)
+    /// Secondary accent (warm stone)
+    static let accentMuted = Color(red: 0.62, green: 0.58, blue: 0.52)
+    /// Tertiary (soft champagne, use sparingly)
+    static let accentSoft = Color(red: 0.72, green: 0.66, blue: 0.55)
 
-    static let backgroundTop = Color(red: 0.04, green: 0.05, blue: 0.12)
-    static let backgroundBottom = Color(red: 0.08, green: 0.06, blue: 0.18)
+    /// Legacy aliases — remapped away from neon cyan/purple
+    static let accentCyan = accent
+    static let accentPurple = accentMuted
+    static let accentGold = accentSoft
 
-    static let glassBorder = Color.white.opacity(0.22)
-    static let glassHighlight = Color.white.opacity(0.45)
-    static let glassShadow = Color.black.opacity(0.35)
+    static let profitGreen = Color(red: 0.45, green: 0.68, blue: 0.55)
+    static let lossRed = Color(red: 0.78, green: 0.48, blue: 0.45)
 
-    static let cardCornerRadius: CGFloat = 24
-    static let buttonCornerRadius: CGFloat = 16
+    static let backgroundTop = Color(red: 0.05, green: 0.05, blue: 0.055)
+    static let backgroundMid = Color(red: 0.07, green: 0.07, blue: 0.075)
+    static let backgroundBottom = Color(red: 0.09, green: 0.085, blue: 0.08)
+
+    static let textPrimary = Color.white.opacity(0.92)
+    static let textSecondary = Color.white.opacity(0.48)
+    static let textTertiary = Color.white.opacity(0.28)
+
+    static let glassBorder = Color.white.opacity(0.12)
+    static let glassHighlight = Color.white.opacity(0.28)
+    static let glassShadow = Color.black.opacity(0.22)
+
+    static let cardCornerRadius: CGFloat = 20
+    static let buttonCornerRadius: CGFloat = 14
 }
 
 struct LiquidBackground: View {
-    @State private var animate = false
-
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [LiquidGlassTheme.backgroundTop, LiquidGlassTheme.backgroundBottom],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                colors: [
+                    LiquidGlassTheme.backgroundTop,
+                    LiquidGlassTheme.backgroundMid,
+                    LiquidGlassTheme.backgroundBottom
+                ],
+                startPoint: .top,
+                endPoint: .bottom
             )
 
-            Circle()
-                .fill(LiquidGlassTheme.accentPurple.opacity(0.25))
-                .frame(width: 320, height: 320)
-                .blur(radius: 80)
-                .offset(x: animate ? -80 : -120, y: animate ? -200 : -160)
+            // Single soft light — top-left, barely there
+            RadialGradient(
+                colors: [
+                    Color.white.opacity(0.06),
+                    Color.clear
+                ],
+                center: .topLeading,
+                startRadius: 10,
+                endRadius: 420
+            )
 
-            Circle()
-                .fill(LiquidGlassTheme.accentCyan.opacity(0.18))
-                .frame(width: 280, height: 280)
-                .blur(radius: 70)
-                .offset(x: animate ? 100 : 140, y: animate ? 300 : 260)
-
-            Circle()
-                .fill(LiquidGlassTheme.accentGold.opacity(0.08))
-                .frame(width: 200, height: 200)
-                .blur(radius: 60)
-                .offset(x: animate ? -60 : 20, y: animate ? 100 : 40)
+            // Faint warm wash at bottom
+            RadialGradient(
+                colors: [
+                    LiquidGlassTheme.accentSoft.opacity(0.04),
+                    Color.clear
+                ],
+                center: .bottomTrailing,
+                startRadius: 20,
+                endRadius: 360
+            )
         }
         .ignoresSafeArea()
-        .onAppear {
-            withAnimation(.easeInOut(duration: 8).repeatForever(autoreverses: true)) {
-                animate = true
-            }
-        }
     }
 }
 
 struct GlassOrb: View {
     let size: CGFloat
-    @State private var pulse = false
 
     var body: some View {
         ZStack {
             Circle()
                 .fill(
-                    RadialGradient(
+                    LinearGradient(
                         colors: [
-                            LiquidGlassTheme.accentCyan.opacity(0.6),
-                            LiquidGlassTheme.accentPurple.opacity(0.3),
-                            Color.white.opacity(0.05)
+                            Color.white.opacity(0.18),
+                            Color.white.opacity(0.04)
                         ],
-                        center: .topLeading,
-                        startRadius: 5,
-                        endRadius: size * 0.7
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
                     )
                 )
 
@@ -82,31 +95,19 @@ struct GlassOrb: View {
                         colors: [
                             LiquidGlassTheme.glassHighlight,
                             LiquidGlassTheme.glassBorder,
-                            .clear
+                            Color.clear
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
-                    lineWidth: 1.5
+                    lineWidth: 1
                 )
 
             Image(systemName: "chart.line.uptrend.xyaxis")
-                .font(.system(size: size * 0.32, weight: .medium))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.white, LiquidGlassTheme.accentCyan],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
+                .font(.system(size: size * 0.28, weight: .light))
+                .foregroundStyle(LiquidGlassTheme.textPrimary.opacity(0.85))
         }
         .frame(width: size, height: size)
-        .liquidGlass(cornerRadius: size / 2)
-        .scaleEffect(pulse ? 1.04 : 1.0)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                pulse = true
-            }
-        }
+        .liquidGlass(cornerRadius: size / 2, opacity: 0.08, borderOpacity: 0.15)
     }
 }

@@ -31,26 +31,20 @@ struct RootView: View {
 
             if showSplash {
                 SplashView()
-                    .transition(.opacity.combined(with: .scale(scale: 1.1)))
+                    .transition(.opacity)
             } else if authService.isAuthenticated {
                 MainTabView()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .opacity
-                    ))
+                    .transition(.opacity)
             } else {
                 AuthContainerView()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .bottom).combined(with: .opacity),
-                        removal: .opacity
-                    ))
+                    .transition(.opacity)
             }
         }
-        .animation(.spring(response: 0.7, dampingFraction: 0.82), value: showSplash)
-        .animation(.spring(response: 0.65, dampingFraction: 0.85), value: authService.isAuthenticated)
+        .animation(.easeInOut(duration: 0.55), value: showSplash)
+        .animation(.easeInOut(duration: 0.45), value: authService.isAuthenticated)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
-                withAnimation(.spring(response: 0.8, dampingFraction: 0.78)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                withAnimation(.easeInOut(duration: 0.55)) {
                     showSplash = false
                 }
             }
@@ -59,81 +53,31 @@ struct RootView: View {
 }
 
 struct SplashView: View {
-    @State private var orbScale: CGFloat = 0.6
-    @State private var orbRotation: Double = 0
-    @State private var titleOpacity: Double = 0
-    @State private var shimmerOffset: CGFloat = -200
+    @State private var opacity: Double = 0
+    @State private var markScale: CGFloat = 0.92
 
     var body: some View {
-        VStack(spacing: 28) {
-            ZStack {
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [
-                                LiquidGlassTheme.accentCyan.opacity(0.45),
-                                LiquidGlassTheme.accentPurple.opacity(0.2),
-                                .clear
-                            ],
-                            center: .center,
-                            startRadius: 20,
-                            endRadius: 120
-                        )
-                    )
-                    .frame(width: 200, height: 200)
-                    .blur(radius: 30)
-                    .scaleEffect(orbScale)
+        VStack(spacing: 32) {
+            GlassOrb(size: 88)
+                .scaleEffect(markScale)
 
-                GlassOrb(size: 100)
-                    .scaleEffect(orbScale)
-                    .rotation3DEffect(.degrees(orbRotation), axis: (x: 0.3, y: 1, z: 0.2))
-            }
-
-            VStack(spacing: 8) {
+            VStack(spacing: 10) {
                 Text("CryptoLedger")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.white, LiquidGlassTheme.accentCyan.opacity(0.9)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .overlay {
-                        Rectangle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.clear, .white.opacity(0.6), .clear],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .frame(width: 80)
-                            .offset(x: shimmerOffset)
-                            .mask(
-                                Text("CryptoLedger")
-                                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                            )
-                    }
+                    .font(.system(size: 32, weight: .semibold))
+                    .tracking(-0.5)
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
 
-                Text("合约 · 现货 · 盈亏追踪")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.55))
+                Text("合约 · 现货 · 盈亏")
+                    .font(.system(size: 14, weight: .regular))
+                    .tracking(1.5)
+                    .foregroundStyle(LiquidGlassTheme.textSecondary)
             }
-            .opacity(titleOpacity)
         }
+        .opacity(opacity)
         .onAppear {
-            withAnimation(.spring(response: 1.2, dampingFraction: 0.65)) {
-                orbScale = 1.0
-            }
-            withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: false)) {
-                orbRotation = 360
-            }
-            withAnimation(.easeOut(duration: 0.8).delay(0.4)) {
-                titleOpacity = 1
-            }
-            withAnimation(.linear(duration: 1.8).repeatForever(autoreverses: false).delay(0.6)) {
-                shimmerOffset = 200
+            withAnimation(.easeOut(duration: 0.9)) {
+                opacity = 1
+                markScale = 1
             }
         }
     }

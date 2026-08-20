@@ -5,20 +5,14 @@ struct DashboardView: View {
     @EnvironmentObject private var authService: AuthService
 
     @State private var selectedSegment: TradeType? = nil
-    @State private var headerScale: CGFloat = 0.95
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 28) {
                 headerSection
-                    .scaleEffect(headerScale)
-                    .onAppear {
-                        withAnimation(.spring(response: 0.8, dampingFraction: 0.7)) {
-                            headerScale = 1.0
-                        }
-                    }
+                    .staggeredAppear(index: 0)
 
-                totalPnLCard
+                totalPnLSection
                     .staggeredAppear(index: 1)
 
                 statsRow
@@ -33,96 +27,77 @@ struct DashboardView: View {
                 recentTradesSection
                     .staggeredAppear(index: 5)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 16)
-            .padding(.bottom, 100)
+            .padding(.horizontal, 22)
+            .padding(.top, 20)
+            .padding(.bottom, 110)
         }
     }
 
     private var headerSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("你好，\(authService.displayName)")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.white)
+        VStack(alignment: .leading, spacing: 6) {
+            Text(formattedDate.uppercased())
+                .font(.system(size: 11, weight: .medium))
+                .tracking(1.2)
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
 
-                Text(formattedDate)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.45))
-            }
-            Spacer()
-            CryptoIconView(symbol: "BTC", size: 44)
-                .liquidGlass(cornerRadius: 22, opacity: 0.1)
+            Text(authService.displayName)
+                .font(.system(size: 26, weight: .semibold))
+                .tracking(-0.4)
+                .foregroundStyle(LiquidGlassTheme.textPrimary)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var totalPnLCard: some View {
-        GlassCard {
-            VStack(spacing: 12) {
-                Text("总盈亏")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.5))
+    private var totalPnLSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("总盈亏")
+                .font(.system(size: 13, weight: .regular))
+                .foregroundStyle(LiquidGlassTheme.textSecondary)
 
-                AnimatedNumber(
-                    value: tradeStore.summary.totalPnL,
-                    suffix: " USDT",
-                    color: tradeStore.summary.totalPnL >= 0
-                        ? LiquidGlassTheme.profitGreen
-                        : LiquidGlassTheme.lossRed
+            AnimatedNumber(
+                value: tradeStore.summary.totalPnL,
+                suffix: " USDT",
+                color: tradeStore.summary.totalPnL >= 0
+                    ? LiquidGlassTheme.profitGreen
+                    : LiquidGlassTheme.lossRed
+            )
+
+            HStack(spacing: 24) {
+                metric(label: "胜率", value: String(format: "%.0f%%", tradeStore.summary.winRate))
+                metric(label: "交易", value: "\(tradeStore.summary.totalTrades)")
+                metric(
+                    label: "胜 / 负",
+                    value: "\(tradeStore.summary.winCount) / \(tradeStore.summary.lossCount)"
                 )
-
-                HStack(spacing: 20) {
-                    VStack(spacing: 4) {
-                        Text("胜率")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.4))
-                        Text(String(format: "%.1f%%", tradeStore.summary.winRate))
-                            .font(.headline)
-                            .foregroundStyle(LiquidGlassTheme.accentGold)
-                    }
-
-                    Divider().frame(height: 30).opacity(0.2)
-
-                    VStack(spacing: 4) {
-                        Text("总交易")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.4))
-                        Text("\(tradeStore.summary.totalTrades)")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                    }
-
-                    Divider().frame(height: 30).opacity(0.2)
-
-                    VStack(spacing: 4) {
-                        Text("胜/负")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.4))
-                        HStack(spacing: 2) {
-                            Text("\(tradeStore.summary.winCount)")
-                                .foregroundStyle(LiquidGlassTheme.profitGreen)
-                            Text("/")
-                                .foregroundStyle(.white.opacity(0.3))
-                            Text("\(tradeStore.summary.lossCount)")
-                                .foregroundStyle(LiquidGlassTheme.lossRed)
-                        }
-                        .font(.headline)
-                    }
-                }
             }
-            .frame(maxWidth: .infinity)
+            .padding(.top, 8)
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .liquidGlass(cornerRadius: LiquidGlassTheme.cardCornerRadius)
+    }
+
+    private func metric(label: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.system(size: 11))
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
+            Text(value)
+                .font(.system(size: 14, weight: .medium))
+                .monospacedDigit()
+                .foregroundStyle(LiquidGlassTheme.textPrimary)
         }
     }
 
     private var statsRow: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 10) {
             StatPill(
-                title: "现货盈亏",
+                title: "现货",
                 value: String(format: "%+.2f", tradeStore.summary.spotPnL),
                 color: tradeStore.summary.spotPnL >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed
             )
             StatPill(
-                title: "合约盈亏",
+                title: "合约",
                 value: String(format: "%+.2f", tradeStore.summary.futuresPnL),
                 color: tradeStore.summary.futuresPnL >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed
             )
@@ -130,53 +105,50 @@ struct DashboardView: View {
     }
 
     private var typeFilter: some View {
-        HStack(spacing: 10) {
-            filterChip(title: "全部", type: nil)
-            filterChip(title: "现货", type: .spot)
-            filterChip(title: "合约", type: .futures)
+        HStack(spacing: 18) {
+            filterItem(title: "全部", type: nil)
+            filterItem(title: "现货", type: .spot)
+            filterItem(title: "合约", type: .futures)
+            Spacer()
         }
     }
 
-    private func filterChip(title: String, type: TradeType?) -> some View {
+    private func filterItem(title: String, type: TradeType?) -> some View {
         Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+            withAnimation(.easeOut(duration: 0.2)) {
                 selectedSegment = type
             }
         } label: {
-            Text(title)
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(selectedSegment == type ? .white : .white.opacity(0.45))
-                .padding(.horizontal, 18)
-                .padding(.vertical, 8)
-                .background {
-                    if selectedSegment == type {
-                        Capsule()
-                            .fill(LiquidGlassTheme.accentCyan.opacity(0.25))
-                            .overlay {
-                                Capsule()
-                                    .stroke(LiquidGlassTheme.accentCyan.opacity(0.4), lineWidth: 0.5)
-                            }
-                    } else {
-                        Capsule()
-                            .fill(Color.white.opacity(0.06))
-                    }
-                }
+            VStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 14, weight: selectedSegment == type ? .medium : .regular))
+                    .foregroundStyle(
+                        selectedSegment == type
+                            ? LiquidGlassTheme.textPrimary
+                            : LiquidGlassTheme.textTertiary
+                    )
+
+                Rectangle()
+                    .fill(selectedSegment == type ? LiquidGlassTheme.textPrimary.opacity(0.7) : Color.clear)
+                    .frame(width: 16, height: 1)
+            }
         }
-        .buttonStyle(PressableButtonStyle())
+        .buttonStyle(.plain)
     }
 
     private var recentTradesSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("最近交易")
-                .font(.headline)
-                .foregroundStyle(.white)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(LiquidGlassTheme.textPrimary)
 
             if tradeStore.recentTrades().isEmpty {
                 EmptyStateView(
                     icon: "tray",
                     title: "暂无交易记录",
-                    subtitle: "点击底部「添加」开始记录您的第一笔交易"
+                    subtitle: "在「添加」中记录第一笔现货或合约交易"
                 )
+                .frame(maxWidth: .infinity)
             } else {
                 ForEach(Array(tradeStore.recentTrades().enumerated()), id: \.element.id) { index, trade in
                     TradeRowView(trade: trade)
@@ -203,35 +175,25 @@ struct DashboardView: View {
 
 struct TradeRowView: View {
     let trade: TradeRecord
-    @State private var appeared = false
 
     var body: some View {
         HStack(spacing: 14) {
-            CryptoIconView(symbol: trade.cryptoSymbol, size: 42)
+            CryptoIconView(symbol: trade.cryptoSymbol, size: 40)
 
             VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
+                HStack(spacing: 8) {
                     Text(trade.cryptoSymbol.uppercased())
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.white)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
 
                     Text(trade.tradeType.rawValue)
-                        .font(.caption2.weight(.medium))
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Capsule().fill(LiquidGlassTheme.accentCyan.opacity(0.15)))
-
-                    if trade.tradeType == .futures, let dir = trade.direction {
-                        Text(dir.rawValue)
-                            .font(.caption2)
-                            .foregroundStyle(.white.opacity(0.5))
-                    }
+                        .font(.system(size: 11))
+                        .foregroundStyle(LiquidGlassTheme.textTertiary)
                 }
 
                 Text(trade.isClosed ? "已平仓" : "持仓中")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.4))
+                    .font(.system(size: 12))
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
             }
 
             Spacer()
@@ -240,18 +202,12 @@ struct TradeRowView: View {
                 PnLBadge(pnl: pnl, compact: true)
             } else {
                 Text("—")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.3))
+                    .font(.system(size: 13))
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
             }
         }
-        .padding(14)
-        .liquidGlass(cornerRadius: 16, opacity: 0.08)
-        .opacity(appeared ? 1 : 0)
-        .offset(x: appeared ? 0 : 20)
-        .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                appeared = true
-            }
-        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 14)
+        .liquidGlass(cornerRadius: 14, opacity: 0.05, borderOpacity: 0.1)
     }
 }

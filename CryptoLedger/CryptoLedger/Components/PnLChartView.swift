@@ -17,37 +17,38 @@ struct PnLChartView: View {
     }
 
     var body: some View {
-        GlassCard(padding: 16) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Text("盈亏曲线")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                    Spacer()
-                    if let last = dataPoints.last {
-                        Text(String(format: "%+.2f USDT", last))
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(last >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed)
-                    }
-                }
-
-                if dataPoints.count >= 2 {
-                    ChartCanvas(points: dataPoints, progress: animationProgress)
-                        .frame(height: 140)
-                } else {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.04))
-                        .frame(height: 140)
-                        .overlay {
-                            Text("完成更多交易后显示曲线")
-                                .font(.caption)
-                                .foregroundStyle(.white.opacity(0.35))
-                        }
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("盈亏曲线")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
+                Spacer()
+                if let last = dataPoints.last {
+                    Text(String(format: "%+.2f", last))
+                        .font(.system(size: 13, weight: .medium))
+                        .monospacedDigit()
+                        .foregroundStyle(last >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed)
                 }
             }
+
+            if dataPoints.count >= 2 {
+                ChartCanvas(points: dataPoints, progress: animationProgress)
+                    .frame(height: 148)
+            } else {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.white.opacity(0.03))
+                    .frame(height: 148)
+                    .overlay {
+                        Text("完成更多交易后显示曲线")
+                            .font(.system(size: 12))
+                            .foregroundStyle(LiquidGlassTheme.textTertiary)
+                    }
+            }
         }
+        .padding(18)
+        .liquidGlass(cornerRadius: LiquidGlassTheme.cardCornerRadius)
         .onAppear {
-            withAnimation(.easeOut(duration: 1.5)) {
+            withAnimation(.easeOut(duration: 1.1)) {
                 animationProgress = 1
             }
         }
@@ -63,17 +64,18 @@ private struct ChartCanvas: View {
             let minVal = (points.min() ?? 0) - abs(points.max() ?? 1) * 0.1
             let maxVal = (points.max() ?? 0) + abs(points.max() ?? 1) * 0.1
             let range = max(maxVal - minVal, 1)
+            let lineColor = (points.last ?? 0) >= 0
+                ? LiquidGlassTheme.profitGreen
+                : LiquidGlassTheme.lossRed
 
             ZStack {
-                // Zero line
                 let zeroY = geo.size.height - CGFloat((0 - minVal) / range) * geo.size.height
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: zeroY))
                     path.addLine(to: CGPoint(x: geo.size.width, y: zeroY))
                 }
-                .stroke(Color.white.opacity(0.1), style: StrokeStyle(lineWidth: 0.5, dash: [4, 4]))
+                .stroke(Color.white.opacity(0.08), style: StrokeStyle(lineWidth: 0.5, dash: [3, 4]))
 
-                // Gradient fill
                 Path { path in
                     guard points.count >= 2 else { return }
                     for (i, val) in points.enumerated() {
@@ -86,19 +88,9 @@ private struct ChartCanvas: View {
                     path.addLine(to: CGPoint(x: 0, y: geo.size.height))
                     path.closeSubpath()
                 }
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            LiquidGlassTheme.accentCyan.opacity(0.25),
-                            LiquidGlassTheme.accentPurple.opacity(0.05)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
+                .fill(lineColor.opacity(0.08))
                 .opacity(Double(progress))
 
-                // Line
                 Path { path in
                     guard points.count >= 2 else { return }
                     for (i, val) in points.enumerated() {
@@ -108,25 +100,14 @@ private struct ChartCanvas: View {
                         else { path.addLine(to: CGPoint(x: x, y: y)) }
                     }
                 }
-                .stroke(
-                    LinearGradient(
-                        colors: [LiquidGlassTheme.accentCyan, LiquidGlassTheme.accentPurple],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ),
-                    style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round)
-                )
+                .stroke(lineColor.opacity(0.85), style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
 
-                // End dot
                 if let last = points.last, progress >= 0.95 {
-                    let x = geo.size.width
                     let y = geo.size.height - CGFloat((last - minVal) / range) * geo.size.height
                     Circle()
-                        .fill(LiquidGlassTheme.accentCyan)
-                        .frame(width: 8, height: 8)
-                        .shadow(color: LiquidGlassTheme.accentCyan.opacity(0.6), radius: 6)
-                        .position(x: x, y: y)
-                        .transition(.scale.combined(with: .opacity))
+                        .fill(lineColor)
+                        .frame(width: 5, height: 5)
+                        .position(x: geo.size.width, y: y)
                 }
             }
         }
@@ -154,11 +135,11 @@ struct MiniSparkline: View {
             }
             .stroke(
                 isPositive ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed,
-                style: StrokeStyle(lineWidth: 1.5, lineCap: .round)
+                style: StrokeStyle(lineWidth: 1.2, lineCap: .round)
             )
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 1.2)) {
+            withAnimation(.easeOut(duration: 0.9)) {
                 drawProgress = 1
             }
         }

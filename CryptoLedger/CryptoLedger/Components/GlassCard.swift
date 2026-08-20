@@ -38,8 +38,8 @@ struct CryptoIconView: View {
                     case .failure:
                         fallbackIcon
                     case .empty:
-                        ProgressView()
-                            .scaleEffect(0.6)
+                        Circle()
+                            .fill(Color.white.opacity(0.06))
                     @unknown default:
                         fallbackIcon
                     }
@@ -52,24 +52,17 @@ struct CryptoIconView: View {
         .clipShape(Circle())
         .overlay {
             Circle()
-                .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
+                .strokeBorder(Color.white.opacity(0.1), lineWidth: 0.5)
         }
-        .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
     }
 
     private var fallbackIcon: some View {
         ZStack {
             Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [LiquidGlassTheme.accentPurple.opacity(0.6), LiquidGlassTheme.accentCyan.opacity(0.4)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(Color.white.opacity(0.08))
             Text(String(symbol.prefix(1)).uppercased())
-                .font(.system(size: size * 0.4, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
+                .font(.system(size: size * 0.38, weight: .medium))
+                .foregroundStyle(LiquidGlassTheme.textSecondary)
         }
     }
 }
@@ -79,31 +72,28 @@ struct AnimatedNumber: View {
     var prefix: String = ""
     var suffix: String = ""
     var decimals: Int = 2
-    var color: Color = .white
+    var color: Color = LiquidGlassTheme.textPrimary
 
     @State private var displayValue: Double = 0
 
     var body: some View {
         Text(formatted(displayValue))
-            .font(.system(.title, design: .rounded, weight: .bold))
+            .font(.system(size: 36, weight: .semibold))
+            .tracking(-0.8)
             .foregroundStyle(color)
             .contentTransition(.numericText(value: displayValue))
-            .onAppear {
-                animateToValue()
-            }
-            .onChange(of: value) { _, _ in
-                animateToValue()
-            }
+            .onAppear { animateToValue() }
+            .onChange(of: value) { _, _ in animateToValue() }
     }
 
     private func animateToValue() {
-        withAnimation(.spring(response: 1.0, dampingFraction: 0.8)) {
+        withAnimation(.easeOut(duration: 0.8)) {
             displayValue = value
         }
     }
 
     private func formatted(_ val: Double) -> String {
-        let sign = val >= 0 && prefix.isEmpty ? (val > 0 ? "+" : "") : ""
+        let sign = val > 0 && prefix.isEmpty ? "+" : ""
         return "\(sign)\(prefix)\(String(format: "%.\(decimals)f", val))\(suffix)"
     }
 }
@@ -113,19 +103,14 @@ struct PnLBadge: View {
     var compact: Bool = false
 
     var body: some View {
-        HStack(spacing: 4) {
-            Image(systemName: pnl >= 0 ? "arrow.up.right" : "arrow.down.right")
-                .font(compact ? .caption2 : .caption)
+        HStack(spacing: 3) {
+            Text(pnl >= 0 ? "▲" : "▼")
+                .font(.system(size: compact ? 8 : 9, weight: .medium))
             Text(String(format: "%+.2f", pnl))
-                .font(compact ? .caption.weight(.semibold) : .subheadline.weight(.semibold))
+                .font(.system(size: compact ? 12 : 13, weight: .medium))
+                .monospacedDigit()
         }
         .foregroundStyle(pnl >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed)
-        .padding(.horizontal, compact ? 8 : 12)
-        .padding(.vertical, compact ? 4 : 6)
-        .background {
-            Capsule()
-                .fill((pnl >= 0 ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed).opacity(0.15))
-        }
     }
 }
 
@@ -135,17 +120,19 @@ struct StatPill: View {
     let color: Color
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.5))
+                .font(.system(size: 12, weight: .regular))
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
             Text(value)
-                .font(.subheadline.weight(.semibold))
+                .font(.system(size: 15, weight: .medium))
+                .monospacedDigit()
                 .foregroundStyle(color)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
-        .liquidGlass(cornerRadius: 14, opacity: 0.08)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .liquidGlass(cornerRadius: 14, opacity: 0.05, borderOpacity: 0.1)
     }
 }
 
@@ -154,32 +141,22 @@ struct EmptyStateView: View {
     let title: String
     let subtitle: String
 
-    @State private var float = false
-
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 14) {
             Image(systemName: icon)
-                .font(.system(size: 48))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [LiquidGlassTheme.accentCyan, LiquidGlassTheme.accentPurple],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .offset(y: float ? -6 : 6)
-                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: float)
+                .font(.system(size: 36, weight: .light))
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
 
             Text(title)
-                .font(.headline)
-                .foregroundStyle(.white)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(LiquidGlassTheme.textPrimary)
 
             Text(subtitle)
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.5))
+                .font(.system(size: 13))
+                .foregroundStyle(LiquidGlassTheme.textSecondary)
                 .multilineTextAlignment(.center)
+                .lineSpacing(3)
         }
         .padding(40)
-        .onAppear { float = true }
     }
 }

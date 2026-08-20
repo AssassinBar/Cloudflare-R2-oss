@@ -4,39 +4,31 @@ struct AuthContainerView: View {
     @State private var showRegister = false
 
     var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
+        VStack {
+            Spacer()
 
-                GlassOrb(size: 80)
-                    .padding(.bottom, 24)
+            GlassOrb(size: 72)
+                .padding(.bottom, 28)
 
-                if showRegister {
-                    RegisterView(onSwitchToLogin: {
-                        withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
-                            showRegister = false
-                        }
-                    })
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    ))
-                } else {
-                    LoginView(onSwitchToRegister: {
-                        withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
-                            showRegister = true
-                        }
-                    })
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .leading).combined(with: .opacity),
-                        removal: .move(edge: .trailing).combined(with: .opacity)
-                    ))
-                }
-
-                Spacer()
+            if showRegister {
+                RegisterView(onSwitchToLogin: {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        showRegister = false
+                    }
+                })
+                .transition(.opacity)
+            } else {
+                LoginView(onSwitchToRegister: {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        showRegister = true
+                    }
+                })
+                .transition(.opacity)
             }
-            .padding(.horizontal, 28)
+
+            Spacer()
         }
+        .padding(.horizontal, 28)
     }
 }
 
@@ -56,12 +48,13 @@ struct LoginView: View {
         VStack(spacing: 24) {
             VStack(spacing: 8) {
                 Text("欢迎回来")
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 28, weight: .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
 
-                Text("登录以同步您的交易记录")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.5))
+                Text("登录以继续记录交易")
+                    .font(.system(size: 14))
+                    .foregroundStyle(LiquidGlassTheme.textSecondary)
             }
             .staggeredAppear(index: 0)
 
@@ -114,12 +107,12 @@ struct LoginView: View {
             } label: {
                 HStack(spacing: 4) {
                     Text("还没有账号？")
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(LiquidGlassTheme.textSecondary)
                     Text("立即注册")
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
-                        .fontWeight(.semibold)
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
+                        .fontWeight(.medium)
                 }
-                .font(.subheadline)
+                .font(.system(size: 14))
             }
             .staggeredAppear(index: 4)
         }
@@ -167,12 +160,13 @@ struct RegisterView: View {
         VStack(spacing: 24) {
             VStack(spacing: 8) {
                 Text("创建账号")
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 28, weight: .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
 
-                Text("开始追踪您的加密资产盈亏")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.5))
+                Text("开始记录合约与现货盈亏")
+                    .font(.system(size: 14))
+                    .foregroundStyle(LiquidGlassTheme.textSecondary)
             }
             .staggeredAppear(index: 0)
 
@@ -235,12 +229,12 @@ struct RegisterView: View {
             } label: {
                 HStack(spacing: 4) {
                     Text("已有账号？")
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(LiquidGlassTheme.textSecondary)
                     Text("返回登录")
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
-                        .fontWeight(.semibold)
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
+                        .fontWeight(.medium)
                 }
-                .font(.subheadline)
+                .font(.system(size: 14))
             }
             .staggeredAppear(index: 6)
         }
@@ -288,8 +282,8 @@ struct GlassTextField: View {
         HStack(spacing: 12) {
             if !icon.isEmpty {
                 Image(systemName: icon)
-                    .font(.body)
-                    .foregroundStyle(isFocused ? LiquidGlassTheme.accentCyan : .white.opacity(0.4))
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(isFocused ? LiquidGlassTheme.textSecondary : LiquidGlassTheme.textTertiary)
                     .frame(width: 20)
             }
 
@@ -303,27 +297,21 @@ struct GlassTextField: View {
                         .autocorrectionDisabled()
                 }
             }
-            .foregroundStyle(.white)
+            .font(.system(size: 15))
+            .foregroundStyle(LiquidGlassTheme.textPrimary)
             .focused($isFocused)
 
             if let trailingIcon {
                 Button(action: { onTrailingTap?() }) {
                     Image(systemName: trailingIcon)
-                        .font(.body)
-                        .foregroundStyle(.white.opacity(0.4))
+                        .font(.system(size: 14))
+                        .foregroundStyle(LiquidGlassTheme.textTertiary)
                 }
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .liquidGlass(cornerRadius: LiquidGlassTheme.buttonCornerRadius, opacity: isFocused ? 0.15 : 0.08)
-        .overlay {
-            RoundedRectangle(cornerRadius: LiquidGlassTheme.buttonCornerRadius, style: .continuous)
-                .stroke(
-                    isFocused ? LiquidGlassTheme.accentCyan.opacity(0.5) : Color.clear,
-                    lineWidth: 1
-                )
-        }
-        .animation(.easeOut(duration: 0.2), value: isFocused)
+        .liquidGlass(cornerRadius: LiquidGlassTheme.buttonCornerRadius, opacity: isFocused ? 0.1 : 0.05, borderOpacity: isFocused ? 0.22 : 0.1)
+        .animation(.easeOut(duration: 0.18), value: isFocused)
     }
 }

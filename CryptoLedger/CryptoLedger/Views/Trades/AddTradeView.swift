@@ -16,11 +16,10 @@ struct AddTradeView: View {
     @State private var note = ""
     @State private var showCryptoPicker = false
     @State private var showSuccess = false
-    @State private var successScale: CGFloat = 0.5
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 20) {
+            VStack(spacing: 22) {
                 header
                     .staggeredAppear(index: 0)
 
@@ -33,10 +32,7 @@ struct AddTradeView: View {
                 if tradeType == .futures {
                     directionSelector
                         .staggeredAppear(index: 3)
-                        .transition(.asymmetric(
-                            insertion: .move(edge: .top).combined(with: .opacity),
-                            removal: .opacity
-                        ))
+                        .transition(.opacity)
                 }
 
                 inputFields
@@ -45,10 +41,10 @@ struct AddTradeView: View {
                 submitButton
                     .staggeredAppear(index: 5)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 16)
-            .padding(.bottom, 100)
-            .animation(.spring(response: 0.45, dampingFraction: 0.82), value: tradeType)
+            .padding(.horizontal, 22)
+            .padding(.top, 20)
+            .padding(.bottom, 110)
+            .animation(.easeOut(duration: 0.25), value: tradeType)
         }
         .overlay {
             if showSuccess {
@@ -61,13 +57,14 @@ struct AddTradeView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             Text("添加交易")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(.white)
-            Text("记录现货或合约交易的盈亏")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.45))
+                .font(.system(size: 26, weight: .semibold))
+                .tracking(-0.4)
+                .foregroundStyle(LiquidGlassTheme.textPrimary)
+            Text("记录现货或合约的入场信息")
+                .font(.system(size: 14))
+                .foregroundStyle(LiquidGlassTheme.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -77,81 +74,55 @@ struct AddTradeView: View {
             showCryptoPicker = true
         } label: {
             HStack(spacing: 14) {
-                CryptoIconView(symbol: selectedAsset.symbol, size: 48)
+                CryptoIconView(symbol: selectedAsset.symbol, size: 44)
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text(selectedAsset.displaySymbol)
-                        .font(.headline)
-                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
                     Text(selectedAsset.name)
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.45))
+                        .font(.system(size: 12))
+                        .foregroundStyle(LiquidGlassTheme.textTertiary)
                 }
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(.white.opacity(0.3))
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
             }
-            .padding(16)
-            .liquidGlass(cornerRadius: 18, opacity: 0.1)
+            .padding(14)
+            .liquidGlass(cornerRadius: 16, opacity: 0.06, borderOpacity: 0.1)
         }
         .buttonStyle(PressableButtonStyle())
     }
 
     private var typeSelector: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 10) {
             ForEach(TradeType.allCases) { type in
                 Button {
-                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    withAnimation(.easeOut(duration: 0.2)) {
                         tradeType = type
                     }
                 } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: type.icon)
-                        Text(type.rawValue)
-                    }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(tradeType == type ? .white : .white.opacity(0.45))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .liquidGlass(
-                        cornerRadius: 14,
-                        opacity: tradeType == type ? 0.18 : 0.06
-                    )
-                    .overlay {
-                        if tradeType == type {
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .stroke(LiquidGlassTheme.accentCyan.opacity(0.4), lineWidth: 0.8)
-                        }
-                    }
-                }
-                .buttonStyle(PressableButtonStyle())
-            }
-        }
-    }
-
-    private var directionSelector: some View {
-        HStack(spacing: 12) {
-            ForEach(TradeDirection.allCases) { dir in
-                Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                        direction = dir
-                    }
-                } label: {
-                    Text(dir.rawValue)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(direction == dir ? .white : .white.opacity(0.45))
+                    Text(type.rawValue)
+                        .font(.system(size: 14, weight: tradeType == type ? .medium : .regular))
+                        .foregroundStyle(
+                            tradeType == type
+                                ? LiquidGlassTheme.textPrimary
+                                : LiquidGlassTheme.textTertiary
+                        )
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, 13)
                         .background {
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(
-                                    direction == dir
-                                        ? (dir == .long
-                                            ? LiquidGlassTheme.profitGreen.opacity(0.25)
-                                            : LiquidGlassTheme.lossRed.opacity(0.25))
-                                        : Color.white.opacity(0.06)
+                                .fill(Color.white.opacity(tradeType == type ? 0.1 : 0.03))
+                        }
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .strokeBorder(
+                                    Color.white.opacity(tradeType == type ? 0.16 : 0.06),
+                                    lineWidth: 0.5
                                 )
                         }
                 }
@@ -160,8 +131,39 @@ struct AddTradeView: View {
         }
     }
 
+    private var directionSelector: some View {
+        HStack(spacing: 10) {
+            ForEach(TradeDirection.allCases) { dir in
+                Button {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        direction = dir
+                    }
+                } label: {
+                    Text(dir.rawValue)
+                        .font(.system(size: 14, weight: direction == dir ? .medium : .regular))
+                        .foregroundStyle(
+                            direction == dir
+                                ? (dir == .long ? LiquidGlassTheme.profitGreen : LiquidGlassTheme.lossRed)
+                                : LiquidGlassTheme.textTertiary
+                        )
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(Color.white.opacity(0.03))
+                        }
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .strokeBorder(Color.white.opacity(0.08), lineWidth: 0.5)
+                        }
+                }
+                .buttonStyle(PressableButtonStyle())
+            }
+        }
+    }
+
     private var inputFields: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: 12) {
             GlassTextField(
                 placeholder: "入场价格 (USDT)",
                 text: $entryPrice,
@@ -204,11 +206,8 @@ struct AddTradeView: View {
         Button {
             submitTrade()
         } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill")
-                Text("保存交易")
-            }
-            .glassButtonStyle(isEnabled: canSubmit)
+            Text("保存交易")
+                .glassButtonStyle(isEnabled: canSubmit)
         }
         .buttonStyle(PressableButtonStyle())
         .disabled(!canSubmit)
@@ -216,22 +215,21 @@ struct AddTradeView: View {
 
     private var successOverlay: some View {
         ZStack {
-            Color.black.opacity(0.5)
+            Color.black.opacity(0.45)
                 .ignoresSafeArea()
 
-            VStack(spacing: 16) {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 64))
+            VStack(spacing: 12) {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 28, weight: .light))
                     .foregroundStyle(LiquidGlassTheme.profitGreen)
-                    .scaleEffect(successScale)
 
-                Text("交易已保存")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(.white)
+                Text("已保存")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
             }
-            .padding(40)
-            .liquidGlass(cornerRadius: 28, opacity: 0.2)
-            .scaleEffect(successScale)
+            .padding(.horizontal, 40)
+            .padding(.vertical, 32)
+            .liquidGlass(cornerRadius: 20, opacity: 0.12, borderOpacity: 0.15)
         }
         .transition(.opacity)
     }
@@ -263,15 +261,13 @@ struct AddTradeView: View {
             notificationManager.notifyTradeReminder(symbol: selectedAsset.symbol)
         }
 
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+        withAnimation(.easeOut(duration: 0.25)) {
             showSuccess = true
-            successScale = 1.0
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-            withAnimation {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            withAnimation(.easeOut(duration: 0.25)) {
                 showSuccess = false
-                successScale = 0.5
             }
             resetForm()
             onComplete?()
@@ -308,36 +304,37 @@ struct CryptoPickerView: View {
                 LiquidBackground()
 
                 ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(Array(filteredAssets.enumerated()), id: \.element.id) { index, asset in
+                    LazyVStack(spacing: 6) {
+                        ForEach(filteredAssets) { asset in
                             Button {
                                 selectedAsset = asset
                                 dismiss()
                             } label: {
                                 HStack(spacing: 14) {
-                                    CryptoIconView(symbol: asset.symbol, size: 40)
+                                    CryptoIconView(symbol: asset.symbol, size: 36)
 
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(asset.displaySymbol)
-                                            .font(.subheadline.weight(.semibold))
-                                            .foregroundStyle(.white)
+                                            .font(.system(size: 14, weight: .medium))
+                                            .foregroundStyle(LiquidGlassTheme.textPrimary)
                                         Text(asset.name)
-                                            .font(.caption)
-                                            .foregroundStyle(.white.opacity(0.45))
+                                            .font(.system(size: 11))
+                                            .foregroundStyle(LiquidGlassTheme.textTertiary)
                                     }
 
                                     Spacer()
 
                                     if asset.id == selectedAsset.id {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .foregroundStyle(LiquidGlassTheme.accentCyan)
+                                        Image(systemName: "checkmark")
+                                            .font(.system(size: 12, weight: .medium))
+                                            .foregroundStyle(LiquidGlassTheme.textSecondary)
                                     }
                                 }
-                                .padding(12)
-                                .liquidGlass(cornerRadius: 14, opacity: 0.08)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 10)
+                                .liquidGlass(cornerRadius: 12, opacity: 0.04, borderOpacity: 0.08)
                             }
                             .buttonStyle(PressableButtonStyle())
-                            .staggeredAppear(index: min(index, 15))
                         }
                     }
                     .padding(.horizontal, 16)
@@ -346,11 +343,11 @@ struct CryptoPickerView: View {
             }
             .navigationTitle("选择币种")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "搜索币种...")
+            .searchable(text: $searchText, prompt: "搜索")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("关闭") { dismiss() }
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
+                        .foregroundStyle(LiquidGlassTheme.textSecondary)
                 }
             }
         }

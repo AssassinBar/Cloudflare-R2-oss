@@ -10,26 +10,26 @@ struct NotificationsView: View {
             if notificationManager.notifications.isEmpty {
                 Spacer()
                 EmptyStateView(
-                    icon: "bell.slash",
+                    icon: "bell",
                     title: "暂无通知",
-                    subtitle: "交易平仓或持仓提醒会显示在这里"
+                    subtitle: "平仓与持仓提醒会显示在这里"
                 )
                 Spacer()
             } else {
                 ScrollView(showsIndicators: false) {
-                    LazyVStack(spacing: 10) {
+                    LazyVStack(spacing: 8) {
                         ForEach(Array(notificationManager.notifications.enumerated()), id: \.element.id) { index, notification in
                             NotificationCard(notification: notification)
                                 .staggeredAppear(index: index)
                                 .onTapGesture {
-                                    withAnimation {
+                                    withAnimation(.easeOut(duration: 0.2)) {
                                         notificationManager.markAsRead(notification)
                                     }
                                 }
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 100)
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 110)
                 }
             }
         }
@@ -38,14 +38,15 @@ struct NotificationsView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("通知中心")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.white)
+                Text("通知")
+                    .font(.system(size: 26, weight: .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
 
                 if notificationManager.unreadCount > 0 {
                     Text("\(notificationManager.unreadCount) 条未读")
-                        .font(.caption)
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
+                        .font(.system(size: 12))
+                        .foregroundStyle(LiquidGlassTheme.textTertiary)
                 }
             }
 
@@ -53,22 +54,18 @@ struct NotificationsView: View {
 
             if notificationManager.unreadCount > 0 {
                 Button {
-                    withAnimation {
+                    withAnimation(.easeOut(duration: 0.2)) {
                         notificationManager.markAllAsRead()
                     }
                 } label: {
                     Text("全部已读")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(LiquidGlassTheme.accentCyan)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .liquidGlass(cornerRadius: 10, opacity: 0.1)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(LiquidGlassTheme.textSecondary)
                 }
-                .buttonStyle(PressableButtonStyle())
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 16)
+        .padding(.horizontal, 22)
+        .padding(.top, 20)
         .padding(.bottom, 12)
     }
 }
@@ -79,60 +76,50 @@ struct NotificationCard: View {
     private var icon: String {
         switch notification.type {
         case .pnlAlert: return "chart.line.uptrend.xyaxis"
-        case .tradeReminder: return "clock.badge.exclamationmark"
+        case .tradeReminder: return "clock"
         case .system: return "info.circle"
         }
     }
 
-    private var iconColor: Color {
-        switch notification.type {
-        case .pnlAlert: return LiquidGlassTheme.accentGold
-        case .tradeReminder: return LiquidGlassTheme.accentCyan
-        case .system: return LiquidGlassTheme.accentPurple
-        }
-    }
-
     var body: some View {
-        HStack(spacing: 14) {
-            ZStack {
-                Circle()
-                    .fill(iconColor.opacity(0.15))
-                    .frame(width: 42, height: 42)
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .light))
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
+                .frame(width: 28, height: 28)
 
-                Image(systemName: icon)
-                    .font(.body)
-                    .foregroundStyle(iconColor)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                HStack {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 6) {
                     Text(notification.title)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.white)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
 
                     if !notification.isRead {
                         Circle()
-                            .fill(LiquidGlassTheme.accentCyan)
-                            .frame(width: 7, height: 7)
+                            .fill(LiquidGlassTheme.textPrimary.opacity(0.7))
+                            .frame(width: 5, height: 5)
                     }
                 }
 
                 Text(notification.body)
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.55))
+                    .font(.system(size: 12))
+                    .foregroundStyle(LiquidGlassTheme.textSecondary)
                     .lineLimit(2)
+                    .lineSpacing(2)
 
                 Text(formatTime(notification.createdAt))
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.3))
+                    .font(.system(size: 11))
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
+                    .padding(.top, 2)
             }
 
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(14)
         .liquidGlass(
-            cornerRadius: 16,
-            opacity: notification.isRead ? 0.06 : 0.12
+            cornerRadius: 14,
+            opacity: notification.isRead ? 0.03 : 0.07,
+            borderOpacity: 0.1
         )
     }
 

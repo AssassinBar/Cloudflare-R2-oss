@@ -81,7 +81,7 @@ final class NotificationManager: ObservableObject {
     func notifyPnLAlert(symbol: String, pnl: Double) {
         let isProfit = pnl >= 0
         let notification = AppNotification(
-            title: isProfit ? "盈利提醒 🎉" : "亏损提醒 ⚠️",
+            title: isProfit ? "盈利提醒" : "亏损提醒",
             body: "\(symbol) 交易已平仓，\(isProfit ? "盈利" : "亏损") \(String(format: "%.2f", abs(pnl))) USDT",
             type: .pnlAlert
         )

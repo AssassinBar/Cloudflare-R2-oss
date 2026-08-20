@@ -29,93 +29,99 @@ struct TradeListView: View {
             if tradeStore.trades.isEmpty {
                 Spacer()
                 EmptyStateView(
-                    icon: "doc.text.magnifyingglass",
+                    icon: "doc.text",
                     title: "还没有交易记录",
-                    subtitle: "记录您的现货和合约交易，追踪每一笔盈亏"
+                    subtitle: "记录现货与合约交易，追踪每一笔盈亏"
                 )
                 Spacer()
             } else {
                 ScrollView(showsIndicators: false) {
-                    LazyVStack(spacing: 12) {
+                    LazyVStack(spacing: 10) {
                         ForEach(Array(filteredTrades.enumerated()), id: \.element.id) { index, trade in
                             TradeDetailCard(trade: trade)
                                 .staggeredAppear(index: index)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 100)
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 110)
                 }
             }
         }
     }
 
     private var header: some View {
-        VStack(spacing: 14) {
-            HStack {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .firstTextBaseline) {
                 Text("交易记录")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 26, weight: .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
                 Spacer()
-                Text("\(filteredTrades.count) 笔")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.4))
+                Text("\(filteredTrades.count)")
+                    .font(.system(size: 14, weight: .medium))
+                    .monospacedDigit()
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
             }
 
             HStack(spacing: 10) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.white.opacity(0.4))
-                TextField("搜索币种...", text: $searchText)
-                    .foregroundStyle(.white)
+                    .font(.system(size: 13))
+                    .foregroundStyle(LiquidGlassTheme.textTertiary)
+                TextField("搜索币种", text: $searchText)
+                    .font(.system(size: 14))
+                    .foregroundStyle(LiquidGlassTheme.textPrimary)
             }
             .padding(.horizontal, 14)
-            .padding(.vertical, 10)
-            .liquidGlass(cornerRadius: 14, opacity: 0.08)
+            .padding(.vertical, 11)
+            .liquidGlass(cornerRadius: 12, opacity: 0.05, borderOpacity: 0.1)
 
-            HStack(spacing: 10) {
-                filterChip("全部", type: nil)
-                filterChip("现货", type: .spot)
-                filterChip("合约", type: .futures)
+            HStack(spacing: 16) {
+                filterItem("全部", type: nil)
+                filterItem("现货", type: .spot)
+                filterItem("合约", type: .futures)
 
                 Spacer()
 
                 Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    withAnimation(.easeOut(duration: 0.2)) {
                         showClosedOnly.toggle()
                     }
                 } label: {
-                    Image(systemName: showClosedOnly ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(showClosedOnly ? LiquidGlassTheme.accentCyan : .white.opacity(0.3))
-                    Text("已平仓")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.5))
+                    Text(showClosedOnly ? "已平仓" : "全部状态")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(
+                            showClosedOnly
+                                ? LiquidGlassTheme.textPrimary
+                                : LiquidGlassTheme.textTertiary
+                        )
                 }
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 16)
+        .padding(.horizontal, 22)
+        .padding(.top, 20)
         .padding(.bottom, 12)
     }
 
-    private func filterChip(_ title: String, type: TradeType?) -> some View {
+    private func filterItem(_ title: String, type: TradeType?) -> some View {
         Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+            withAnimation(.easeOut(duration: 0.2)) {
                 filterType = type
             }
         } label: {
-            Text(title)
-                .font(.caption.weight(.medium))
-                .foregroundStyle(filterType == type ? .white : .white.opacity(0.4))
-                .padding(.horizontal, 14)
-                .padding(.vertical, 6)
-                .background {
-                    Capsule().fill(
+            VStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 13, weight: filterType == type ? .medium : .regular))
+                    .foregroundStyle(
                         filterType == type
-                            ? LiquidGlassTheme.accentPurple.opacity(0.3)
-                            : Color.white.opacity(0.06)
+                            ? LiquidGlassTheme.textPrimary
+                            : LiquidGlassTheme.textTertiary
                     )
-                }
+                Rectangle()
+                    .fill(filterType == type ? LiquidGlassTheme.textPrimary.opacity(0.7) : Color.clear)
+                    .frame(width: 14, height: 1)
+            }
         }
-        .buttonStyle(PressableButtonStyle())
+        .buttonStyle(.plain)
     }
 }
 
@@ -131,27 +137,27 @@ struct TradeDetailCard: View {
     var body: some View {
         VStack(spacing: 0) {
             Button {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.82)) {
+                withAnimation(.easeOut(duration: 0.25)) {
                     isExpanded.toggle()
                 }
             } label: {
                 HStack(spacing: 14) {
-                    CryptoIconView(symbol: trade.cryptoSymbol, size: 44)
+                    CryptoIconView(symbol: trade.cryptoSymbol, size: 40)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        HStack {
+                        HStack(spacing: 8) {
                             Text(trade.cryptoSymbol.uppercased())
-                                .font(.headline)
-                                .foregroundStyle(.white)
+                                .font(.system(size: 15, weight: .medium))
+                                .foregroundStyle(LiquidGlassTheme.textPrimary)
 
-                            Label(trade.tradeType.rawValue, systemImage: trade.tradeType.icon)
-                                .font(.caption2)
-                                .foregroundStyle(LiquidGlassTheme.accentCyan)
+                            Text(trade.tradeType.rawValue)
+                                .font(.system(size: 11))
+                                .foregroundStyle(LiquidGlassTheme.textTertiary)
                         }
 
                         Text(formatDate(trade.createdAt))
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.4))
+                            .font(.system(size: 11))
+                            .foregroundStyle(LiquidGlassTheme.textTertiary)
                     }
 
                     Spacer()
@@ -160,25 +166,24 @@ struct TradeDetailCard: View {
                         PnLBadge(pnl: pnl)
                     } else {
                         Text("持仓")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(LiquidGlassTheme.accentGold)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(Capsule().fill(LiquidGlassTheme.accentGold.opacity(0.15)))
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(LiquidGlassTheme.accentSoft)
                     }
 
                     Image(systemName: "chevron.down")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.3))
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(LiquidGlassTheme.textTertiary)
                         .rotationEffect(.degrees(isExpanded ? 180 : 0))
                 }
-                .padding(16)
+                .padding(14)
             }
             .buttonStyle(PressableButtonStyle())
 
             if isExpanded {
-                VStack(spacing: 12) {
-                    Divider().opacity(0.15)
+                VStack(spacing: 10) {
+                    Rectangle()
+                        .fill(Color.white.opacity(0.06))
+                        .frame(height: 0.5)
 
                     detailRow("入场价格", String(format: "%.4f USDT", trade.entryPrice))
                     if let exit = trade.exitPrice {
@@ -200,12 +205,12 @@ struct TradeDetailCard: View {
                             Button {
                                 showCloseSheet = true
                             } label: {
-                                Label("平仓", systemImage: "checkmark.circle")
-                                    .font(.subheadline.weight(.medium))
+                                Text("平仓")
+                                    .font(.system(size: 13, weight: .medium))
                                     .foregroundStyle(LiquidGlassTheme.profitGreen)
                                     .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                                    .liquidGlass(cornerRadius: 12, opacity: 0.1)
+                                    .padding(.vertical, 11)
+                                    .liquidGlass(cornerRadius: 10, opacity: 0.05, borderOpacity: 0.1)
                             }
                             .buttonStyle(PressableButtonStyle())
                         }
@@ -215,22 +220,23 @@ struct TradeDetailCard: View {
                                 tradeStore.deleteTrade(trade)
                             }
                         } label: {
-                            Label("删除", systemImage: "trash")
-                                .font(.subheadline.weight(.medium))
+                            Text("删除")
+                                .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(LiquidGlassTheme.lossRed)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
-                                .liquidGlass(cornerRadius: 12, opacity: 0.1)
+                                .padding(.vertical, 11)
+                                .liquidGlass(cornerRadius: 10, opacity: 0.05, borderOpacity: 0.1)
                         }
                         .buttonStyle(PressableButtonStyle())
                     }
+                    .padding(.top, 4)
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
-                .transition(.opacity.combined(with: .move(edge: .top)))
+                .padding(.horizontal, 14)
+                .padding(.bottom, 14)
+                .transition(.opacity)
             }
         }
-        .liquidGlass(cornerRadius: 18, opacity: 0.08)
+        .liquidGlass(cornerRadius: 16, opacity: 0.05, borderOpacity: 0.1)
         .sheet(isPresented: $showCloseSheet) {
             closeTradeSheet
         }
@@ -240,17 +246,17 @@ struct TradeDetailCard: View {
         NavigationStack {
             ZStack {
                 LiquidBackground()
-                VStack(spacing: 20) {
-                    CryptoIconView(symbol: trade.cryptoSymbol, size: 60)
+                VStack(spacing: 24) {
+                    CryptoIconView(symbol: trade.cryptoSymbol, size: 56)
 
                     Text("平仓 \(trade.cryptoSymbol.uppercased())")
-                        .font(.title3.weight(.bold))
-                        .foregroundStyle(.white)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(LiquidGlassTheme.textPrimary)
 
                     GlassTextField(
                         placeholder: "出场价格 (USDT)",
                         text: $exitPriceText,
-                        icon: "dollarsign.circle",
+                        icon: "dollarsign",
                         keyboardType: .decimalPad
                     )
 
@@ -282,12 +288,13 @@ struct TradeDetailCard: View {
     private func detailRow(_ label: String, _ value: String) -> some View {
         HStack {
             Text(label)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.4))
+                .font(.system(size: 12))
+                .foregroundStyle(LiquidGlassTheme.textTertiary)
             Spacer()
             Text(value)
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.white.opacity(0.8))
+                .font(.system(size: 12, weight: .medium))
+                .monospacedDigit()
+                .foregroundStyle(LiquidGlassTheme.textSecondary)
         }
     }
 

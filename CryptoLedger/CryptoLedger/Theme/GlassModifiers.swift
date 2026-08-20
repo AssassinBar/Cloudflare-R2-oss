@@ -4,31 +4,18 @@ import SwiftUI
 
 struct LiquidGlassModifier: ViewModifier {
     var cornerRadius: CGFloat = LiquidGlassTheme.cardCornerRadius
-    var opacity: Double = 0.12
-    var borderOpacity: Double = 0.25
+    var opacity: Double = 0.08
+    var borderOpacity: Double = 0.14
 
     func body(content: Content) -> some View {
         content
-            .background {
-                glassBackground
-            }
+            .background { glassBackground }
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .stroke(
-                        LinearGradient(
-                            colors: [
-                                Color.white.opacity(borderOpacity + 0.15),
-                                Color.white.opacity(borderOpacity * 0.4),
-                                Color.white.opacity(borderOpacity * 0.1)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 0.8
-                    )
+                    .strokeBorder(Color.white.opacity(borderOpacity), lineWidth: 0.5)
             }
-            .shadow(color: LiquidGlassTheme.glassShadow, radius: 16, y: 8)
+            .shadow(color: LiquidGlassTheme.glassShadow, radius: 10, y: 4)
     }
 
     @ViewBuilder
@@ -42,16 +29,7 @@ struct LiquidGlassModifier: ViewModifier {
                 .fill(.ultraThinMaterial)
                 .overlay {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color.white.opacity(opacity + 0.06),
-                                    Color.white.opacity(opacity * 0.3)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(Color.white.opacity(opacity * 0.5))
                 }
         }
     }
@@ -60,8 +38,8 @@ struct LiquidGlassModifier: ViewModifier {
 extension View {
     func liquidGlass(
         cornerRadius: CGFloat = LiquidGlassTheme.cardCornerRadius,
-        opacity: Double = 0.12,
-        borderOpacity: Double = 0.25
+        opacity: Double = 0.08,
+        borderOpacity: Double = 0.14
     ) -> some View {
         modifier(LiquidGlassModifier(
             cornerRadius: cornerRadius,
@@ -72,45 +50,19 @@ extension View {
 
     func glassButtonStyle(isEnabled: Bool = true) -> some View {
         self
-            .font(.headline)
-            .foregroundStyle(.white)
+            .font(.system(size: 17, weight: .semibold))
+            .foregroundStyle(LiquidGlassTheme.textPrimary)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .liquidGlass(cornerRadius: LiquidGlassTheme.buttonCornerRadius, opacity: isEnabled ? 0.18 : 0.08)
-            .opacity(isEnabled ? 1 : 0.5)
-    }
-}
-
-// MARK: - Shimmer Animation
-
-struct ShimmerModifier: ViewModifier {
-    @State private var phase: CGFloat = 0
-
-    func body(content: Content) -> some View {
-        content
+            .padding(.vertical, 15)
+            .background {
+                RoundedRectangle(cornerRadius: LiquidGlassTheme.buttonCornerRadius, style: .continuous)
+                    .fill(Color.white.opacity(isEnabled ? 0.12 : 0.05))
+            }
             .overlay {
-                GeometryReader { geo in
-                    LinearGradient(
-                        colors: [.clear, .white.opacity(0.25), .clear],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: geo.size.width * 0.4)
-                    .offset(x: phase * geo.size.width * 1.4 - geo.size.width * 0.4)
-                    .mask(content)
-                }
+                RoundedRectangle(cornerRadius: LiquidGlassTheme.buttonCornerRadius, style: .continuous)
+                    .strokeBorder(Color.white.opacity(isEnabled ? 0.18 : 0.08), lineWidth: 0.5)
             }
-            .onAppear {
-                withAnimation(.linear(duration: 2.5).repeatForever(autoreverses: false)) {
-                    phase = 1
-                }
-            }
-    }
-}
-
-extension View {
-    func shimmer() -> some View {
-        modifier(ShimmerModifier())
+            .opacity(isEnabled ? 1 : 0.45)
     }
 }
 
@@ -119,13 +71,13 @@ extension View {
 struct PressableButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
-            .opacity(configuration.isPressed ? 0.88 : 1.0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .opacity(configuration.isPressed ? 0.85 : 1.0)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
-// MARK: - Staggered Appear
+// MARK: - Staggered Appear (subtle)
 
 struct StaggeredAppearModifier: ViewModifier {
     let index: Int
@@ -134,10 +86,9 @@ struct StaggeredAppearModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .opacity(appeared ? 1 : 0)
-            .offset(y: appeared ? 0 : 24)
-            .scaleEffect(appeared ? 1 : 0.95)
+            .offset(y: appeared ? 0 : 12)
             .onAppear {
-                withAnimation(.spring(response: 0.55, dampingFraction: 0.78).delay(Double(index) * 0.08)) {
+                withAnimation(.easeOut(duration: 0.45).delay(Double(index) * 0.05)) {
                     appeared = true
                 }
             }
