@@ -48,6 +48,18 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(hudScale, forKey: "hudScale") }
     }
 
+    @Published var broadcastChannel: String {
+        didSet { UserDefaults.standard.set(broadcastChannel, forKey: "broadcastChannel") }
+    }
+
+    @Published var selectedSpeakerId: String {
+        didSet { UserDefaults.standard.set(selectedSpeakerId, forKey: "selectedSpeakerId") }
+    }
+
+    @Published var playXiaoAiChime: Bool {
+        didSet { UserDefaults.standard.set(playXiaoAiChime, forKey: "playXiaoAiChime") }
+    }
+
     private init() {
         let defaults = UserDefaults.standard
         port = defaults.object(forKey: "port") as? Int ?? 17880
@@ -60,6 +72,9 @@ final class AppSettings: ObservableObject {
         autoClickCursor = defaults.object(forKey: "autoClickCursor") as? Bool ?? false
         launchAtLogin = defaults.object(forKey: "launchAtLogin") as? Bool ?? false
         hudScale = defaults.object(forKey: "hudScale") as? Double ?? 1.0
+        broadcastChannel = defaults.string(forKey: "broadcastChannel") ?? "speaker"
+        selectedSpeakerId = defaults.string(forKey: "selectedSpeakerId") ?? ""
+        playXiaoAiChime = defaults.object(forKey: "playXiaoAiChime") as? Bool ?? true
     }
 
     private static func setLaunchAtLogin(_ enabled: Bool) {

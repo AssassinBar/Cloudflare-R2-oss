@@ -84,7 +84,7 @@ final class ConfirmCenter: ObservableObject {
         finishTask = Task { [weak self] in
             guard let self else { return }
             if request.speak {
-                await XiaoAiSpeaker.shared.speak(response.spokenResult)
+                await announce(response.spokenResult)
             } else {
                 try? await Task.sleep(nanoseconds: 450_000_000)
             }
@@ -138,23 +138,54 @@ final class ConfirmCenter: ObservableObject {
 
     func health() -> HealthPayload {
         let voices = XiaoAiSpeaker.shared.availableVoices().map(\.name)
+        let xiaomi = XiaomiCloud.shared.snapshot()
         return HealthPayload(
             ok: serverRunning,
             app: "XiaoAiCursorConfirm",
-            version: "1.0.0",
+            version: "1.1.0",
             port: AppSettings.shared.port,
             phase: phase,
             pending: pendingCount,
             cursorRunning: CursorAXWatcher.shared.isCursorRunning,
             microphone: XiaoAiListener.shared.isListening ? "listening" : "idle",
             speech: XiaoAiSpeaker.shared.isSpeaking ? "speaking" : "idle",
-            voices: voices
+            voices: voices,
+            xiaomiAuthorized: xiaomi.authorized,
+            speakerName: xiaomi.speakerName,
+            speakerOnline: xiaomi.speakerOnline,
+            broadcastChannel: AppSettings.shared.broadcastChannel
         )
     }
 
     func healthSummary() -> String {
         let h = health()
-        return "对接 \(h.ok ? "正常" : "未启动") · 端口 \(h.port) · Cursor \(h.cursorRunning ? "在运行" : "未发现") · 中文语音 \(h.voices.count) 个"
+        let speaker = h.xiaomiAuthorized
+            ? "小爱音箱 \(h.speakerName.isEmpty ? "未选择" : h.speakerName)\(h.speakerOnline ? " 在线" : " 离线")"
+            : "小米账号未授权"
+        return "对接 \(h.ok ? "正常" : "未启动") · \(speaker) · Cursor \(h.cursorRunning ? "在运行" : "未发现")"
+    }
+
+    func announce(_ text: String) async {
+        let channel = AppSettings.shared.broadcastChannel
+        var speakerOK = false
+        if channel != "local", XiaomiCloud.shared.authorized {
+            do {
+                try await XiaomiCloud.shared.announce(text)
+                speakerOK = true
+            } catch {
+                log("小爱音箱播报失败：\(error.localizedDescription)", level: "error")
+            }
+        }
+        let shouldSpeakLocally = channel == "local" || channel == "both" || !speakerOK
+        if shouldSpeakLocally {
+            if !speakerOK, channel == "speaker" {
+                log("音箱不可用，回退到本机语音")
+            }
+            await XiaoAiSpeaker.shared.speak(text)
+        } else {
+            let seconds = min(8.0, max(2.2, Double(text.count) * 0.16))
+            try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+        }
     }
 
     func log(_ text: String, level: String = "info") {
@@ -191,7 +222,7 @@ final class ConfirmCenter: ObservableObject {
     private func drive(_ request: ConfirmRequest) async {
         if request.speak {
             phase = .speaking
-            await XiaoAiSpeaker.shared.speak(request.spokenPrompt)
+            await announce(request.spokenPrompt)
             if settled { return }
         }
 

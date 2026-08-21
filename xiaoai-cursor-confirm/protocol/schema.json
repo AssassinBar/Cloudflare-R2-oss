@@ -69,7 +69,11 @@
         "cursorRunning": { "type": "boolean" },
         "microphone": { "type": "string" },
         "speech": { "type": "string" },
-        "voices": { "type": "array", "items": { "type": "string" } }
+        "voices": { "type": "array", "items": { "type": "string" } },
+        "xiaomiAuthorized": { "type": "boolean" },
+        "speakerName": { "type": "string" },
+        "speakerOnline": { "type": "boolean" },
+        "broadcastChannel": { "type": "string" }
       }
     }
   }

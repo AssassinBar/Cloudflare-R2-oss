@@ -13,6 +13,7 @@ struct TestDockView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 header
+                XiaomiAuthView()
                 scenarioGrid
                 customCard
                 curlCard
@@ -29,7 +30,7 @@ struct TestDockView: View {
             Text("测试对接")
                 .font(.title2.weight(.semibold))
                 .foregroundStyle(.white)
-            Text("用这些场景模拟 Cursor 调用小爱同学做确认语音提示。应用会弹出光球动画、朗读请求，并等待确认或取消。")
+            Text("先扫码或登录小米账号授权音箱。测试场景会弹出光球，并把确认词用小爱同学播报出来。")
                 .font(.callout)
                 .foregroundStyle(.white.opacity(0.65))
         }

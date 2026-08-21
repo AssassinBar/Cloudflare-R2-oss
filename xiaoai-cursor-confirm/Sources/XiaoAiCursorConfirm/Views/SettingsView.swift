@@ -26,7 +26,11 @@ struct SettingsView: View {
                 }
             }
 
-            Section("小爱语音") {
+            Section {
+                XiaomiAuthView()
+            }
+
+            Section("本机语音（回退）") {
                 TextField("唤醒口吻", text: $settings.catchphrase)
                 Picker("中文语音", selection: $settings.voiceIdentifier) {
                     Text("自动（婷婷优先）").tag("")
@@ -43,7 +47,7 @@ struct SettingsView: View {
                     Slider(value: $settings.speechPitch, in: 0.9...1.25)
                 }
                 Toggle("播报后自动听取 确认 / 取消", isOn: $settings.autoListen)
-                Button("试听一句") {
+            Button("试听一句（本机）") {
                     Task {
                         center.phase = .speaking
                         await XiaoAiSpeaker.shared.speak("主人，我在。Cursor 有一条确认请求。")

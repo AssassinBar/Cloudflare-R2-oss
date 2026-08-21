@@ -4,18 +4,20 @@ import readline from "node:readline";
 import {
   confirm,
   health,
+  minaTTS,
   PROTOCOL_VERSION,
   runScenario,
   simulateConfirm,
   speak,
 } from "../protocol/index.mjs";
+import { simulateMinaAnnounce } from "../protocol/xiaomi.mjs";
 
 const simulate = process.env.XIAOAI_SIMULATE === "1";
 const tools = [
   {
     name: "xiaoai_confirm",
     description:
-      "调用 macOS 小爱确认助手，用语音提示请用户确认 Cursor 操作。用户说确认/取消或点击 HUD 后返回结果。",
+      "调用已授权的小爱音箱播报 Cursor 确认（小爱原声）。同时弹出 macOS 光球，用户确认/取消后返回结果。",
     inputSchema: {
       type: "object",
       required: ["title", "message"],
@@ -41,12 +43,12 @@ const tools = [
   },
   {
     name: "xiaoai_health",
-    description: "检查小爱确认助手是否在本机运行，以及 Cursor 进程/语音是否可用。",
+    description: "检查小爱确认助手、小米账号授权和小爱音箱是否可用。",
     inputSchema: { type: "object", properties: {} },
   },
   {
     name: "xiaoai_test_scenario",
-    description: "运行内置测试对接场景，例如 command、animationTour、listenLoop。",
+    description: "运行内置测试对接场景，例如 command、speaker、animationTour。",
     inputSchema: {
       type: "object",
       required: ["scenario"],
@@ -54,6 +56,15 @@ const tools = [
         scenario: { type: "string" },
         transcript: { type: "string" },
       },
+    },
+  },
+  {
+    name: "xiaoai_mina_tts",
+    description: "把一段话通过已授权的小爱音箱用小爱同学原声播报出来，不进入确认。",
+    inputSchema: {
+      type: "object",
+      required: ["text"],
+      properties: { text: { type: "string" } },
     },
   },
 ];
@@ -138,6 +149,8 @@ async function callTool(name, args) {
       return simulate
         ? simulateConfirm({ title: args.scenario, message: "test" }, args.transcript || "确认")
         : runScenario(args.scenario);
+    case "xiaoai_mina_tts":
+      return simulate ? simulateMinaAnnounce({ text: args.text || "主人，我在" }) : minaTTS(args.text);
     default:
       throw new Error(`Unknown tool: ${name}`);
   }

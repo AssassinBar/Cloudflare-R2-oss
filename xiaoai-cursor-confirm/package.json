@@ -1,6 +1,6 @@
 {
   "name": "xiaoai-cursor-confirm",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "macOS 小爱同学风格的 Cursor 确认语音提示与测试对接",

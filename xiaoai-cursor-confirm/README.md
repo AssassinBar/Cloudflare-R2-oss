@@ -1,22 +1,21 @@
 # 小爱确认 · Cursor for macOS
 
-Cursor 需要你点确认时，调用本机 **小爱同学** 风格助手：橙色光球动画、中文语音播报，并听取「确认 / 取消」。给 Cursor 用的 macOS 版本，带完整 **测试对接**。
-
-不是小米官方 SDK。语音使用系统中文 TTS（优先「婷婷」），交互和光球按小爱同学的口吻与动效来做。
+Cursor 任务需要你确认时，通过 **小米账号扫码或登录** 授权家里的 **小爱音箱**，用小爱同学原声（含提示音）播报出来。本机同时弹出光球动画，方便你点确认 / 取消。
 
 ## 能做什么
 
-- 浮动 HUD 光球：空闲呼吸、唤醒、说话波形、听取涟漪、成功 / 拒绝
-- 语音提示：「主人，Cursor 有一条终端命令确认……请说确认或取消。」
-- 口头确认：确认、好的、可以 / 取消、拒绝、不要
-- Cursor 对接：本机 HTTP、CLI、MCP、`xiaoai-cursor://` URL
-- 可选辅助功能：发现 Cursor 确认框，语音通过后自动点按钮
-- 测试对接面板：终端命令、写文件、MCP、Agent、危险操作、动画走查、健康检查
+- 米家 / 小米账号 App **扫码授权**，或账号密码登录（支持二次验证码）
+- 列出账号下的小爱音箱，选择要播报的那一台
+- Cursor 确认到达后：音箱先播小爱提示音，再用小爱原声读出确认内容
+- 本机 HUD 光球动画：唤醒、说话、听取、成功 / 拒绝
+- 音箱不可用时自动回退本机中文语音
+- 测试对接：扫码、试听音箱、终端命令 / 写文件 / MCP / Agent 等场景
 
 ```
-Cursor / CLI / MCP  --HTTP 127.0.0.1:17880-->  小爱确认.app
-                                              光球动画 + 语音 + 听取
-                                         <--  approve | reject | timeout
+Cursor 需要确认
+    → 小爱确认.app（本机光球）
+    → 已授权的小爱音箱用小爱同学播报
+    ← 你在电脑上确认或取消
 ```
 
 ## 在 Mac 上安装
@@ -30,15 +29,17 @@ chmod +x scripts/install-macos.sh
 open "dist/小爱确认.app"
 ```
 
-或用 XcodeGen：`brew install xcodegen && xcodegen && xcodebuild -scheme XiaoAiCursorConfirm`.
+### 授权小爱音箱
 
-首次启动会在 `127.0.0.1:17880` 打开对接服务。菜单栏也有「小爱确认」。
+1. 打开应用 → **测试对接** 或 **设置**
+2. 点 **扫码登录小米账号**，用米家 / 小米账号 App 扫描
+3. 或输入小米账号和密码登录（若需要二次验证，填短信 / 邮箱验证码）
+4. 选择要播报的小爱音箱，点 **试听播报**
+5. 听到音箱说出「主人，我在…」后即可对接 Cursor
 
-系统设置里打开：
+令牌只存在本机钥匙串。默认播报通道是「仅小爱音箱」，失败时回退本机语音。
 
-1. 麦克风（听取确认）
-2. 辅助功能（可选，监听 Cursor 对话框）
-3. 下载增强版「婷婷」语音，听感更接近
+可在设置里打开麦克风（本机听取确认）和辅助功能（可选，监听 Cursor 对话框）。
 
 ## 测试对接
 
@@ -46,35 +47,27 @@ App 主窗口 → **测试对接**：
 
 | 场景 | 作用 |
 | --- | --- |
+| 扫码 / 登录面板 | 授权小米账号并选择音箱 |
+| 小爱音箱播报 | 把确认词打到音箱（含提示音） |
 | 终端命令确认 | 模拟 Cursor 申请 `npm test` |
 | 写入文件确认 | 模拟覆盖源码 |
 | MCP 授权 | 模拟第三方工具授权 |
 | Agent 继续执行 | 模拟 Cloud Agent 等待你继续 |
 | 危险操作警告 | 高风险命令 |
-| 只播报不听取 | 只说话，不进入听取 |
-| 语音确认闭环 | 播报后等你说确认 / 取消 |
 | 动画状态走查 | 唤醒 → 说话 → 听取 → 成功 → 拒绝 |
-| 对接健康检查 | 端口、中文语音、Cursor 进程 |
+| 对接健康检查 | 端口、小米账号、音箱、Cursor 进程 |
 
-没有 Mac 时，可用浏览器预览动画：
+不连真实小米账号的协议自测：
 
 ```bash
 cd xiaoai-cursor-confirm
-npm run preview
-# 打开 http://127.0.0.1:4173
-```
-
-协议 / CLI / MCP 自测（Linux 和 macOS 都能跑）：
-
-```bash
 npm test
-# 或 ./scripts/test-dock.sh
-node cli/xiaoai-cursor.mjs confirm --simulate --title "允许运行" --message "ls"
+node cli/xiaoai-cursor.mjs xiaomi-tts --simulate --text "主人，Cursor 需要你确认"
 ```
 
-## 让 Cursor 调用小爱
+## 让 Cursor 调用小爱音箱
 
-### 1. HTTP（最直接）
+确认请求会先走本机 `127.0.0.1:17880`，App 再调用小米 MiNA（`micoapi`）把文本发到音箱的 `text_to_speech`。
 
 ```bash
 curl -sS http://127.0.0.1:17880/v1/health
@@ -90,75 +83,35 @@ curl -sS -X POST http://127.0.0.1:17880/v1/confirm \
   }'
 ```
 
-成功时返回：
+小米账号相关：
 
-```json
-{
-  "id": "...",
-  "decision": "approve",
-  "via": "voice",
-  "transcript": "确认",
-  "durationMs": 4120,
-  "spoken": true
-}
-```
+- `GET /v1/xiaomi/status`
+- `POST /v1/xiaomi/qr/start` 开始扫码
+- `POST /v1/xiaomi/login` `{"user":"...","password":"...","otp":""}`
+- `GET /v1/xiaomi/speakers`
+- `POST /v1/xiaomi/tts` `{"text":"主人，Cursor 需要你确认"}`
+- `POST /v1/xiaomi/logout`
 
-`kind`：`command` | `write` | `mcp` | `agent` | `tool` | `warn` | `test`  
-`decision`：`approve` | `reject` | `timeout` | `cancelled`
-
-其它接口：
-
-- `POST /v1/speak` `{"text":"任务已完成"}`
-- `POST /v1/test/scenario` `{"scenario":"command"}`
-- `POST /v1/decision` 测试面板远程点确认 / 取消
-- `GET /v1/status`
-
-### 2. CLI
-
-退出码：`0` 确认 · `1` 拒绝 · `2` 超时 · `3` 撤回 · `4` 错误
+CLI：
 
 ```bash
-node cli/xiaoai-cursor.mjs confirm \
-  --kind command \
-  --title "允许运行终端命令" \
-  --message "npm test"
-
-node cli/xiaoai-cursor.mjs speak --text "主人，我在"
-node cli/xiaoai-cursor.mjs test --scenario animationTour
+node cli/xiaoai-cursor.mjs xiaomi-status
+node cli/xiaoai-cursor.mjs xiaomi-tts --text "主人，Cursor 需要你确认"
+node cli/xiaoai-cursor.mjs confirm --title "允许运行终端命令" --message "npm test"
 ```
 
-### 3. MCP
-
-把 `examples/cursor-mcp.json` 合并进 Cursor 的 MCP 配置，工具为：
-
-- `xiaoai_confirm`
-- `xiaoai_speak`
-- `xiaoai_health`
-- `xiaoai_test_scenario`
-
-规则示例见 `examples/cursor-rule.md`：需要用户确认时先调 `xiaoai_confirm`，只有 `approve` 才继续。
-
-无 App 的 CI 可设 `XIAOAI_SIMULATE=1`。
-
-### 4. URL Scheme
-
-```
-xiaoai-cursor://confirm?kind=command&title=允许运行终端命令&message=npm%20test
-xiaoai-cursor://speak?text=任务已完成
-xiaoai-cursor://test?scenario=command
-```
+MCP 工具：`xiaoai_confirm`、`xiaoai_mina_tts`、`xiaoai_health`。配置见 `examples/cursor-mcp.json`。
 
 ## 目录
 
 ```
 xiaoai-cursor-confirm/
-  Sources/XiaoAiCursorConfirm/   macOS SwiftUI 应用
-  protocol/                      本机协议 + 测试
+  Sources/XiaoAiCursorConfirm/   macOS SwiftUI 应用（含小米账号 / MiNA）
+  protocol/                      本机协议 + 小米播报测试
   cli/xiaoai-cursor.mjs          命令行
   mcp/server.mjs                 Cursor MCP
-  preview/                       光球动画与测试对接网页
+  preview/                       光球动画预览
   examples/                      Cursor 配置示例
-  scripts/install-macos.sh       打包 .app
 ```
 
-默认端口 `17880`，只绑 loopback。
+默认端口 `17880`，只绑 loopback。音箱播报走你自己的小米账号云接口，不是第三方 TTS。

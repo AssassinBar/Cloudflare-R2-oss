@@ -164,6 +164,10 @@ struct HealthPayload: Codable {
     var microphone: String
     var speech: String
     var voices: [String]
+    var xiaomiAuthorized: Bool = false
+    var speakerName: String = ""
+    var speakerOnline: Bool = false
+    var broadcastChannel: String = "local"
 }
 
 struct LogEntry: Identifiable, Equatable {
@@ -189,6 +193,7 @@ enum TestScenario: String, CaseIterable, Identifiable {
     case speakOnly
     case listenLoop
     case animationTour
+    case speaker
     case health
 
     var id: String { rawValue }
@@ -203,6 +208,7 @@ enum TestScenario: String, CaseIterable, Identifiable {
         case .speakOnly: return "只播报不听取"
         case .listenLoop: return "语音确认闭环"
         case .animationTour: return "动画状态走查"
+        case .speaker: return "小爱音箱播报"
         case .health: return "对接健康检查"
         }
     }
@@ -217,7 +223,8 @@ enum TestScenario: String, CaseIterable, Identifiable {
         case .speakOnly: return "只触发小爱语音提示，不进入听取"
         case .listenLoop: return "播报后进入听取，可用语音确认/取消"
         case .animationTour: return "依次演示唤醒、说话、听取、成功、拒绝"
-        case .health: return "检查端口、语音、麦克风与 Cursor 进程"
+        case .speaker: return "授权后把确认词打到小爱音箱（含提示音）"
+        case .health: return "检查端口、语音、麦克风、小米账号与 Cursor 进程"
         }
     }
 
@@ -280,6 +287,16 @@ enum TestScenario: String, CaseIterable, Identifiable {
                 title: "请用语音确认",
                 message: "听到提示后请说确认，或者说取消。",
                 timeoutMs: 20_000
+            )
+        case .speaker:
+            return ConfirmRequest(
+                source: "test",
+                kind: .test,
+                title: "小爱音箱播报测试",
+                message: "Cursor 有一条确认请求，请在电脑上点确认或取消。",
+                timeoutMs: 20_000,
+                speak: true,
+                listen: true
             )
         case .animationTour, .health:
             return ConfirmRequest(

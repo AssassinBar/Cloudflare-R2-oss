@@ -2,13 +2,16 @@
 import {
   confirm,
   health,
+  minaTTS,
   parseArgs,
   PROTOCOL_VERSION,
   runScenario,
   SCENARIOS,
   simulateConfirm,
   speak,
+  xiaomiStatus,
 } from "../protocol/index.mjs";
+import { qrLoginQuery, simulateMinaAnnounce, speakerConfirmScript } from "../protocol/xiaomi.mjs";
 
 const EXIT = {
   approve: 0,
@@ -82,6 +85,34 @@ async function main() {
           flags
         );
         break;
+      case "xiaomi-status": {
+        if (flags.simulate) {
+          print({ authorized: false, status: "simulate", speakers: [] }, flags);
+          break;
+        }
+        print(await xiaomiStatus(port), flags);
+        break;
+      }
+      case "xiaomi-qr": {
+        print(
+          {
+            loginUrl: "https://account.xiaomi.com/longPolling/loginUrl",
+            query: qrLoginQuery(),
+            hint: "请在 macOS 小爱确认 App 中扫码。CLI 只打印授权参数。",
+          },
+          flags
+        );
+        break;
+      }
+      case "xiaomi-tts": {
+        const text = flags.text || flags.message || speakerConfirmScript("Cursor 确认", "测试播报");
+        if (flags.simulate) {
+          print(simulateMinaAnnounce({ text, playChime: flags.chime !== "0" }), flags);
+          break;
+        }
+        print(await minaTTS(text, port), flags);
+        break;
+      }
       case "version":
         print({ app: "xiaoai-cursor", version: PROTOCOL_VERSION }, flags);
         break;
@@ -107,7 +138,10 @@ function printHelp() {
   xiaoai-cursor confirm --title "允许运行终端命令" --message "npm test"
   xiaoai-cursor speak --text "主人，任务已完成"
   xiaoai-cursor test --scenario command
-  xiaoai-cursor confirm --simulate --transcript 取消
+  xiaoai-cursor xiaomi-qr
+  xiaoai-cursor xiaomi-status
+  xiaoai-cursor xiaomi-tts --text "主人，Cursor 需要你确认"
+  xiaoai-cursor xiaomi-tts --simulate --text "测试播报"
 
 常用参数:
   --port 17880          本机小爱确认服务端口

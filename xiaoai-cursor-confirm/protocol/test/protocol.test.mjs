@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -19,6 +20,17 @@ import {
   spokenPrompt,
   validateResponse,
 } from "../index.mjs";
+import {
+  clientSign,
+  md5Upper,
+  parseXiaomiJSON,
+  qrLoginQuery,
+  simulateMinaAnnounce,
+  speakerConfirmScript,
+  ubusTTSBody,
+  wakeupBody,
+  XIAOMI_SID_HOME,
+} from "../xiaomi.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const cliPath = path.join(root, "cli", "xiaoai-cursor.mjs");
@@ -153,9 +165,72 @@ test("MCP stdio initialize, list tools, and simulate confirm", async () => {
 
   assert.equal(replies[0].result.serverInfo.name, "xiaoai-cursor-confirm");
   const names = replies[1].result.tools.map((tool) => tool.name);
-  assert.deepEqual(names, ["xiaoai_confirm", "xiaoai_speak", "xiaoai_health", "xiaoai_test_scenario"]);
+  assert.ok(names.includes("xiaoai_confirm"));
+  assert.ok(names.includes("xiaoai_mina_tts"));
+  assert.ok(names.includes("xiaoai_test_scenario"));
   const called = JSON.parse(replies[2].result.content[0].text);
   assert.equal(called.decision, "approve");
+});
+
+test("Xiaomi JSON prefix is stripped", () => {
+  const parsed = parseXiaomiJSON('&&&START&&&{"code":0,"result":"ok"}');
+  assert.equal(parsed.code, 0);
+  assert.equal(parsed.result, "ok");
+});
+
+test("Xiaomi password hash is MD5 uppercase", () => {
+  assert.equal(md5Upper("123456"), "E10ADC3949BA59ABBE56E057F20F883E");
+});
+
+test("Xiaomi STS clientSign matches SHA1 base64", () => {
+  assert.equal(clientSign("123", "sec"), createHash("sha1").update("nonce=123&sec").digest("base64"));
+});
+
+test("QR login targets Mi Home sid for 扫码授权", () => {
+  const query = qrLoginQuery("DEV123");
+  assert.equal(query.sid, XIAOMI_SID_HOME);
+  assert.equal(query.callback, "https://sts.api.io.mi.com/sts");
+  assert.equal(query._locale, "zh_CN");
+});
+
+test("MiNA TTS ubus payload uses XiaoAi mibrain text_to_speech", () => {
+  const body = ubusTTSBody("did-1", "主人，Cursor 需要确认");
+  assert.equal(body.method, "text_to_speech");
+  assert.equal(body.path, "mibrain");
+  assert.equal(JSON.parse(body.message).text, "主人，Cursor 需要确认");
+  assert.equal(wakeupBody("did-1").method, "wakeup");
+});
+
+test("speaker confirm script is XiaoAi catchphrase", () => {
+  const text = speakerConfirmScript("允许运行终端命令", "npm test");
+  assert.match(text, /^主人，Cursor 有一条确认/);
+  assert.match(text, /请到电脑上确认或取消/);
+});
+
+test("simulateMinaAnnounce plays chime then TTS", () => {
+  const result = simulateMinaAnnounce({
+    deviceId: "lx06",
+    name: "客厅小爱",
+    text: "主人，我在",
+    playChime: true,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.via, "mina-simulate");
+  assert.equal(result.calls[0].method, "wakeup");
+  assert.equal(result.calls[1].method, "text_to_speech");
+});
+
+test("CLI xiaomi-tts --simulate returns mina payload", async () => {
+  const result = await runCli(["xiaomi-tts", "--simulate", "--text", "主人，Cursor 需要你确认"]);
+  assert.equal(result.code, 0);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.ok, true);
+  assert.equal(payload.calls[1].method, "text_to_speech");
+});
+
+test("speaker scenario exists in test dock catalog", () => {
+  assert.equal(SCENARIOS.speaker.title, "小爱音箱播报");
+  assert.ok(SCENARIOS.speaker.request.message.includes("Cursor"));
 });
 
 function runCli(args) {

@@ -3,6 +3,7 @@ import SwiftUI
 struct MainWindow: View {
     @EnvironmentObject private var center: ConfirmCenter
     @EnvironmentObject private var settings: AppSettings
+    @ObservedObject private var xiaomi = XiaomiCloud.shared
     @State private var tab = 0
 
     var body: some View {
@@ -94,7 +95,11 @@ struct MainWindow: View {
             Circle()
                 .fill(live ? XiaoAiTheme.success : XiaoAiTheme.reject)
                 .frame(width: 8, height: 8)
-            Text(live ? "Cursor 对接已就绪" : "对接未启动")
+            Text(live
+                 ? (xiaomi.authorized
+                    ? "小爱音箱已授权 · Cursor 对接就绪"
+                    : "Cursor 对接已就绪 · 待授权小爱音箱")
+                 : "对接未启动")
                 .font(.caption.weight(.medium))
         }
         .padding(.horizontal, 12)

@@ -1,7 +1,7 @@
 export const DEFAULT_PORT = 17880;
 export const DEFAULT_HOST = "127.0.0.1";
 export const APP_NAME = "XiaoAiCursorConfirm";
-export const PROTOCOL_VERSION = "1.0.0";
+export const PROTOCOL_VERSION = "1.1.0";
 
 export const KINDS = ["command", "write", "mcp", "agent", "tool", "warn", "test"];
 export const DECISIONS = ["approve", "reject", "timeout", "cancelled"];
@@ -106,10 +106,22 @@ export const SCENARIOS = {
       listen: false,
     },
   },
+  speaker: {
+    id: "speaker",
+    title: "小爱音箱播报",
+    subtitle: "授权后把确认词打到小爱音箱（含提示音）",
+    request: {
+      source: "test",
+      kind: "test",
+      title: "小爱音箱播报测试",
+      message: "Cursor 有一条确认请求，请在电脑上点确认或取消。",
+      timeoutMs: 20000,
+    },
+  },
   health: {
     id: "health",
     title: "对接健康检查",
-    subtitle: "检查端口、语音、麦克风与 Cursor 进程",
+    subtitle: "检查端口、语音、麦克风、小米账号与 Cursor 进程",
     request: null,
   },
 };
@@ -224,6 +236,18 @@ export async function speak(text, port) {
     body: { text },
     timeoutMs: 30_000,
   });
+}
+
+export async function minaTTS(text, port) {
+  return requestJson(`${baseUrl(port)}/v1/xiaomi/tts`, {
+    method: "POST",
+    body: { text },
+    timeoutMs: 30_000,
+  });
+}
+
+export async function xiaomiStatus(port) {
+  return requestJson(`${baseUrl(port)}/v1/xiaomi/status`, { timeoutMs: 5000 });
 }
 
 export async function runScenario(scenario, port) {

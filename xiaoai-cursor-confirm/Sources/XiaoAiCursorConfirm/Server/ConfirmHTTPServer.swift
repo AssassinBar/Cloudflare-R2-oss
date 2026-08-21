@@ -95,7 +95,7 @@ final class ConfirmHTTPServer: @unchecked Sendable {
                     let body = try message.decode(SpeakBody.self)
                     self.center?.phase = .speaking
                     ConfirmHUDController.shared.show(center: self.center ?? .shared)
-                    await XiaoAiSpeaker.shared.speak(body.text)
+                    await self.center?.announce(body.text)
                     self.center?.phase = .idle
                     ConfirmHUDController.shared.hide()
                     response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
@@ -118,6 +118,44 @@ final class ConfirmHTTPServer: @unchecked Sendable {
                 do {
                     let body = try message.decode(DecisionBody.self)
                     self.center?.decide(body.decision, via: .test, transcript: body.transcript ?? "")
+                    response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
+                } catch {
+                    response = HTTPMessage.error(400, error.localizedDescription, extra: cors)
+                }
+            case ("GET", "/v1/xiaomi/status"):
+                response = HTTPMessage.json(XiaomiCloud.shared.snapshot(), extra: cors)
+            case ("POST", "/v1/xiaomi/qr/start"):
+                XiaomiCloud.shared.startQRLogin()
+                response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
+            case ("POST", "/v1/xiaomi/qr/cancel"):
+                XiaomiCloud.shared.cancelQR()
+                response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
+            case ("POST", "/v1/xiaomi/login"):
+                do {
+                    let body = try message.decode(XiaomiLoginBody.self)
+                    await XiaomiCloud.shared.login(user: body.user, password: body.password, otp: body.otp)
+                    response = HTTPMessage.json(XiaomiCloud.shared.snapshot(), extra: cors)
+                } catch {
+                    response = HTTPMessage.error(400, error.localizedDescription, extra: cors)
+                }
+            case ("POST", "/v1/xiaomi/logout"):
+                XiaomiCloud.shared.logout()
+                response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
+            case ("GET", "/v1/xiaomi/speakers"):
+                await XiaomiCloud.shared.refreshSpeakers()
+                response = HTTPMessage.json(XiaomiCloud.shared.snapshot(), extra: cors)
+            case ("POST", "/v1/xiaomi/speaker"):
+                do {
+                    let body = try message.decode(SpeakerPickBody.self)
+                    AppSettings.shared.selectedSpeakerId = body.deviceId
+                    response = HTTPMessage.json(XiaomiCloud.shared.snapshot(), extra: cors)
+                } catch {
+                    response = HTTPMessage.error(400, error.localizedDescription, extra: cors)
+                }
+            case ("POST", "/v1/xiaomi/tts"):
+                do {
+                    let body = try message.decode(SpeakBody.self)
+                    try await XiaomiCloud.shared.announce(body.text)
                     response = HTTPMessage.json(OkFlag(ok: true), extra: cors)
                 } catch {
                     response = HTTPMessage.error(400, error.localizedDescription, extra: cors)
@@ -215,4 +253,12 @@ private struct ScenarioResult: Codable { var ok: Bool; var scenario: String }
 private struct DecisionBody: Codable {
     var decision: ConfirmDecision
     var transcript: String?
+}
+private struct XiaomiLoginBody: Codable {
+    var user: String
+    var password: String
+    var otp: String?
+}
+private struct SpeakerPickBody: Codable {
+    var deviceId: String
 }
