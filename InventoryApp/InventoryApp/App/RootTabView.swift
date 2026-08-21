@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 enum AppTab: Hashable {
     case dashboard
@@ -11,7 +10,6 @@ enum AppTab: Hashable {
 
 struct RootTabView: View {
     @State private var selectedTab: AppTab = .dashboard
-    @State private var morePath = NavigationPath()
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -46,9 +44,7 @@ struct RootTabView: View {
                 .tag(AppTab.more)
         }
         .tint(AppTheme.accent)
-        .onChange(of: selectedTab) { _, _ in
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
+        .sensoryFeedback(.selection, trigger: selectedTab)
     }
 }
 

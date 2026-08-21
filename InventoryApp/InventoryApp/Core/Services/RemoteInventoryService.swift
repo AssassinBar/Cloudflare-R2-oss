@@ -1,7 +1,8 @@
 import Foundation
 
 /// Example remote implementation. Wire real endpoints when backend is ready.
-actor RemoteInventoryService: InventoryServicing {
+@MainActor
+final class RemoteInventoryService: InventoryServicing, @unchecked Sendable {
     private let client: APIClient
 
     init(client: APIClient) {

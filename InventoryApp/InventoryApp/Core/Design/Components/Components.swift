@@ -146,7 +146,7 @@ struct SearchField: View {
             TextField(placeholder, text: $text)
                 .font(AppTheme.body(15))
                 .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
+                .autocorrectionDisabled()
             if !text.isEmpty {
                 Button {
                     withAnimation(AppAnimation.snappy) { text = "" }

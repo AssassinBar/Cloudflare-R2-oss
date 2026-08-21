@@ -2,7 +2,7 @@ import Foundation
 
 /// Domain service contracts. Swap MockInventoryService ↔ RemoteInventoryService
 /// without touching ViewModels or UI.
-protocol InventoryServicing: Sendable {
+protocol InventoryServicing: AnyObject, Sendable {
     func fetchDashboard() async throws -> DashboardSnapshot
     func fetchProducts(query: String?, page: Int, pageSize: Int) async throws -> APIListResponse<Product>
     func fetchProduct(id: String) async throws -> Product
@@ -14,6 +14,7 @@ protocol InventoryServicing: Sendable {
 }
 
 enum ServiceFactory {
+    @MainActor
     static func makeInventoryService() -> any InventoryServicing {
         switch AppEnvironment.current {
         case .mock:

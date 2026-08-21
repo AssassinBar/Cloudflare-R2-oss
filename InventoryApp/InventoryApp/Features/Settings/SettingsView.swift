@@ -46,7 +46,7 @@ struct SettingsView: View {
                                         .background(AppTheme.surfaceSecondary)
                                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                                         .textInputAutocapitalization(.never)
-                                        .disableAutocorrection(true)
+                                        .autocorrectionDisabled()
                                         .keyboardType(.URL)
                                 }
                                 .transition(.opacity.combined(with: .move(edge: .top)))

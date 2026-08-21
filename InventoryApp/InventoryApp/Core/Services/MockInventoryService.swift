@@ -1,7 +1,8 @@
 import Foundation
 
 /// Local mock backend so the UI framework runs without a server.
-actor MockInventoryService: InventoryServicing {
+@MainActor
+final class MockInventoryService: InventoryServicing, @unchecked Sendable {
     private let products: [Product]
     private let purchases: [PurchaseOrder]
     private let sales: [SalesOrder]
@@ -25,7 +26,7 @@ actor MockInventoryService: InventoryServicing {
             ),
             Product(
                 id: "p3", sku: "SKU-3301", name: "有机燕麦片 1kg", category: "食品",
-                unit: "袋", costPrice: 18, salePrice: 39.9, stockQuantity: 120,
+                unit: "袋", costPrice: 18, salePrice: Decimal(string: "39.9") ?? 40, stockQuantity: 120,
                 lowStockThreshold: 30, barcode: "6901003301", note: nil, updatedAt: now
             ),
             Product(
@@ -83,7 +84,7 @@ actor MockInventoryService: InventoryServicing {
                 id: "so2", number: "SO-20260820-003", customerId: "c2", customerName: "城北便利店",
                 status: .confirmed,
                 lines: [
-                    DocumentLine(id: "sl3", productId: "p3", productName: "有机燕麦片 1kg", quantity: 24, unitPrice: 39.9)
+                    DocumentLine(id: "sl3", productId: "p3", productName: "有机燕麦片 1kg", quantity: 24, unitPrice: Decimal(string: "39.9") ?? 40)
                 ],
                 createdAt: calendar.date(byAdding: .hour, value: -6, to: now) ?? now
             )

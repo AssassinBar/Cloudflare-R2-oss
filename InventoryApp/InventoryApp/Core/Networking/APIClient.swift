@@ -60,11 +60,12 @@ enum HTTPMethod: String {
 }
 
 /// Thin HTTP client. Replace auth header injection when integrating real APIs.
-actor APIClient {
+final class APIClient: @unchecked Sendable {
     private let baseURL: URL
     private let session: URLSession
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
+    private let lock = NSLock()
     private var authToken: String?
 
     init(baseURL: URL, session: URLSession = .shared) {
@@ -83,7 +84,9 @@ actor APIClient {
     }
 
     func setAuthToken(_ token: String?) {
+        lock.lock()
         authToken = token
+        lock.unlock()
     }
 
     func send<R: APIRequest>(_ request: R) async throws -> R.Response {
@@ -106,7 +109,11 @@ actor APIClient {
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        if let token = authToken {
+        lock.lock()
+        let token = authToken
+        lock.unlock()
+
+        if let token {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
