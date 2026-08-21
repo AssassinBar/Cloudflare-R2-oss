@@ -8,14 +8,24 @@
 - iOS 17.0+
 - Swift 5.9+
 
-## 运行前（很重要）
+## 安装到这台 Mac（必须选开发团队）
 
-1. 顶部运行目标先选 **iPhone 模拟器**（不要选真机 `OneBar`，除非已配置签名）
-2. 左侧点开工程 Target → **Signing & Capabilities**
-3. 勾选 **Automatically manage signing**，在 **Team** 里选你的 Apple ID 团队
-4. 再按 ⌘R 运行
+Xcode 报错 `Signing for 'InventoryApp' requires a development team` 时，App **不会出现在 Mac 上**。按下面做一次即可。
 
-若仍报错：点 Xcode 顶部红色错误数字，把完整错误文案发我。
+1. 左侧最顶上点蓝色图标 **InventoryApp** 工程（不要停在报错列表）
+2. 中间选 TARGETS → **InventoryApp**
+3. 打开 **Signing & Capabilities**
+4. 勾选 **Automatically manage signing**
+5. **Team** 下拉框：
+   - 若是 None：点 **Add an Account…**，登录你的 Apple ID（普通免费账号即可）
+   - 再选 **Personal Team**（你的名字）
+6. 顶部运行目标 **不要** 选 `My Mac (Designed for iPad)`（这个也要团队签名，没选 Team 就会失败）
+7. 点目标列表，选 **My Mac**（Mac Catalyst，带显示器图标）
+8. 按 **⌘R** 运行
+
+运行成功后，启动台 / 应用程序里会出现「库存通」。
+
+装到 iPhone `OneBar`：Team 选好后，目标改成真机，手机上打开 设置 → 通用 → VPN 与设备管理，信任你的开发者证书。
 
 ## 功能模块
 
