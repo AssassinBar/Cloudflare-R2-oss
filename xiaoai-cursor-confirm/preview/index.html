@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>小爱确认 · Cursor 语音对接预览</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <section class="stage">
+      <p class="wake">小爱同学</p>
+      <canvas id="orb" width="640" height="640" aria-label="小爱光球动画"></canvas>
+      <p id="phaseLabel" class="phase">idle</p>
+      <h1 id="title">等待 Cursor 调用确认</h1>
+      <p id="message">打开测试对接，或连接本机 17880 端口。</p>
+      <p id="heard" class="heard"></p>
+      <div class="hud-actions">
+        <button id="rejectBtn" class="ghost" type="button">取消</button>
+        <button id="approveBtn" class="primary" type="button">确认</button>
+      </div>
+    </section>
+    <section class="dock">
+      <header>
+        <h2>测试对接</h2>
+        <p>这些按钮模拟 Cursor 发起确认。可在浏览器里预览动画，或勾选“连接本机 App”走真实语音。</p>
+      </header>
+      <label class="live">
+        <input id="liveToggle" type="checkbox" />
+        连接本机小爱确认 App（http://127.0.0.1:17880）
+      </label>
+      <div id="scenarios" class="grid"></div>
+      <div class="custom">
+        <h3>自定义确认</h3>
+        <select id="kind">
+          <option value="command">终端命令</option>
+          <option value="write">写入文件</option>
+          <option value="mcp">MCP 授权</option>
+          <option value="agent" selected>Agent 继续</option>
+          <option value="warn">危险操作</option>
+        </select>
+        <input id="customTitle" value="允许运行终端命令" />
+        <input id="customMessage" value="npm test --filter protocol" />
+        <button id="customRun" class="primary" type="button">弹出确认并播报</button>
+      </div>
+      <pre id="log" class="log"></pre>
+    </section>
+  </div>
+  <script type="module" src="./orb.js"></script>
+</body>
+</html>
