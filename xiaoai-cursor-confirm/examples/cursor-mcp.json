@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "xiaoai-confirm": {
+      "command": "node",
+      "args": ["${workspaceFolder}/xiaoai-cursor-confirm/mcp/server.mjs"],
+      "env": {
+        "XIAOAI_PORT": "17880"
+      }
+    }
+  }
+}

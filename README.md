@@ -9,6 +9,9 @@ cloudflare R2是一个文件储存系统，配合Cloudflare Workers可以实现�
 
 [文件库 (oss.ljxnet.cn)](https://oss.ljxnet.cn/)
 
+同仓库另含 macOS 工具 **小爱确认**：Cursor 调用小爱同学风格助手做确认语音提示（光球动画 + 测试对接）。见 [`xiaoai-cursor-confirm/README.md`](xiaoai-cursor-confirm/README.md)。
+
+
 
 ### 搭建教程
 

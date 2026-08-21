@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xiaoai.cursor.local/v1/confirm.schema.json",
+  "title": "XiaoAi Cursor Confirm Protocol",
+  "description": "Cursor 调用小爱同学做确认语音提示的本机协议。",
+  "oneOf": [
+    { "$ref": "#/$defs/confirmRequest" },
+    { "$ref": "#/$defs/confirmResponse" },
+    { "$ref": "#/$defs/healthPayload" }
+  ],
+  "$defs": {
+    "kind": {
+      "type": "string",
+      "enum": ["command", "write", "mcp", "agent", "tool", "warn", "test"]
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["approve", "reject", "timeout", "cancelled"]
+    },
+    "via": {
+      "type": "string",
+      "enum": ["voice", "click", "keyboard", "test", "system"]
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["idle", "wake", "speaking", "listening", "success", "reject"]
+    },
+    "confirmRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "message"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "default": "cursor" },
+        "kind": { "$ref": "#/$defs/kind", "default": "agent" },
+        "title": { "type": "string", "minLength": 1 },
+        "message": { "type": "string" },
+        "prompt": { "type": "string" },
+        "detail": { "type": "string" },
+        "timeoutMs": { "type": "integer", "minimum": 3000, "maximum": 300000, "default": 60000 },
+        "speak": { "type": "boolean", "default": true },
+        "listen": { "type": "boolean", "default": true },
+        "locale": { "type": "string", "default": "zh-CN" }
+      }
+    },
+    "confirmResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "decision", "via"],
+      "properties": {
+        "id": { "type": "string" },
+        "decision": { "$ref": "#/$defs/decision" },
+        "via": { "$ref": "#/$defs/via" },
+        "transcript": { "type": "string" },
+        "durationMs": { "type": "integer", "minimum": 0 },
+        "spoken": { "type": "boolean" }
+      }
+    },
+    "healthPayload": {
+      "type": "object",
+      "required": ["ok", "app", "port"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "app": { "type": "string" },
+        "version": { "type": "string" },
+        "port": { "type": "integer" },
+        "phase": { "$ref": "#/$defs/phase" },
+        "pending": { "type": "integer" },
+        "cursorRunning": { "type": "boolean" },
+        "microphone": { "type": "string" },
+        "speech": { "type": "string" },
+        "voices": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

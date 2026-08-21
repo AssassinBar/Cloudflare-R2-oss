@@ -1,0 +1,12 @@
+{
+  "name": "xiaoai-cursor-confirm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "macOS 小爱同学风格的 Cursor 确认语音提示与测试对接",
+  "scripts": {
+    "test": "node --test protocol/test/protocol.test.mjs",
+    "preview": "python3 -m http.server 4173 --directory preview",
+    "cli": "node cli/xiaoai-cursor.mjs"
+  }
+}
