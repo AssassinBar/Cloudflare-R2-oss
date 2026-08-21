@@ -18,7 +18,7 @@ let package = Package(
                 "Resources/XiaoAiCursorConfirm.entitlements"
             ],
             swiftSettings: [
-                .unsafeFlags(["-parse-as-library"])
+                .unsafeFlags(["-parse-as-library", "-swift-version", "5"])
             ],
             linkerSettings: [
                 .linkedFramework("AppKit"),
