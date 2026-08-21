@@ -18,16 +18,31 @@ Cursor 需要确认
     ← 你在电脑上确认或取消
 ```
 
-## 在 Mac 上安装
+## 在这台 Mac 上下载并编译
 
-需要 macOS 13+ 和 Xcode Command Line Tools（或完整 Xcode）。
+打开「终端」，整段复制执行：
 
 ```bash
-cd xiaoai-cursor-confirm
-chmod +x scripts/install-macos.sh
+xcode-select --install 2>/dev/null || true
+git clone -b cursor/macos-xiaoai-confirm-29b2 https://github.com/AssassinBar/Cloudflare-R2-oss.git
+cd Cloudflare-R2-oss/xiaoai-cursor-confirm
+chmod +x scripts/install-macos.sh 编译.command
 ./scripts/install-macos.sh
-open "dist/小爱确认.app"
 ```
+
+脚本会编译并自动打开 `dist/小爱确认.app`。也可以在 Finder 里双击 `编译.command`。
+
+若本机已经克隆过仓库：
+
+```bash
+cd Cloudflare-R2-oss
+git fetch origin cursor/macos-xiaoai-confirm-29b2
+git checkout cursor/macos-xiaoai-confirm-29b2
+cd xiaoai-cursor-confirm
+./scripts/install-macos.sh
+```
+
+需要 macOS 13+。没有 Swift 时先安装 Xcode 或执行 `xcode-select --install`，并打开一次 Xcode 同意许可。
 
 ### 授权小爱音箱
 
