@@ -1,2 +1,12 @@
 node_modules/
 *.local
+
+# Xcode / macOS
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+.DS_Store

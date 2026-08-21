@@ -1,0 +1,52 @@
+name: Build InventoryApp
+
+on:
+  push:
+    branches:
+      - cursor/ios-inventory-framework-7fab
+    paths:
+      - "InventoryApp/**"
+      - ".github/workflows/build-inventory-app.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: InventoryApp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project InventoryApp.xcodeproj \
+            -scheme InventoryApp \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -configuration Debug \
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            build | xcbeautify || xcodebuild \
+            -project InventoryApp.xcodeproj \
+            -scheme InventoryApp \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -configuration Debug \
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Upload app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: InventoryApp-iphonesimulator
+          path: InventoryApp/DerivedData/Build/Products/Debug-iphonesimulator/InventoryApp.app
+          if-no-files-found: warn
