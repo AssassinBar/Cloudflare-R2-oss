@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor
 final class ConfirmHUDController {
-    static let shared = ConfirmHUDController()
+    nonisolated(unsafe) static let shared = ConfirmHUDController()
 
     private var panel: NSPanel?
     private var hosting: NSHostingView<ConfirmHUDView>?
@@ -31,21 +31,13 @@ final class ConfirmHUDController {
             self.hosting = hostingView
         }
         position()
-        panel?.alphaValue = 0
+        panel?.alphaValue = 1
         panel?.orderFrontRegardless()
-        NSAnimationContext.runAnimationGroup { ctx in
-            ctx.duration = 0.28
-            panel?.animator().alphaValue = 1
-        }
     }
 
     func hide() {
-        NSAnimationContext.runAnimationGroup { ctx in
-            ctx.duration = 0.22
-            panel?.animator().alphaValue = 0
-        } completionHandler: {
-            self.panel?.orderOut(nil)
-        }
+        panel?.orderOut(nil)
+        panel?.alphaValue = 0
     }
 
     private func position() {

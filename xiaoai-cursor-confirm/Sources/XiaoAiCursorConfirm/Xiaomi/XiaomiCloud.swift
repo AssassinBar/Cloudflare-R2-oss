@@ -3,7 +3,7 @@ import Foundation
 
 @MainActor
 final class XiaomiCloud: ObservableObject {
-    static let shared = XiaomiCloud()
+    nonisolated(unsafe) static let shared = XiaomiCloud()
 
     @Published var authorized = false
     @Published var userId = ""

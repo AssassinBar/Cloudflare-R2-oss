@@ -2,7 +2,7 @@ import Foundation
 import Network
 
 final class ConfirmHTTPServer: @unchecked Sendable {
-    weak var center: ConfirmCenter?
+    nonisolated(unsafe) weak var center: ConfirmCenter?
     private var listener: NWListener?
     private let queue = DispatchQueue(label: "cn.xiaoai.cursor.http")
 

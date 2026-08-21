@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 final class ConfirmCenter: ObservableObject {
-    static let shared = ConfirmCenter()
+    nonisolated(unsafe) static let shared = ConfirmCenter()
 
     @Published var current: ConfirmRequest?
     @Published var phase: OrbPhase = .idle

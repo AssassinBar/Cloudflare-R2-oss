@@ -28,7 +28,8 @@ cd "${ROOT}"
 
 swift build -c release --product "${BIN_NAME}" \
   -Xswiftc -parse-as-library \
-  -Xswiftc -swift-version -Xswiftc 5
+  -Xswiftc -swift-version -Xswiftc 5 \
+  -Xswiftc -strict-concurrency=minimal
 
 BIN_DIR="$(swift build -c release --product "${BIN_NAME}" --show-bin-path)"
 BIN_PATH="${BIN_DIR}/${BIN_NAME}"

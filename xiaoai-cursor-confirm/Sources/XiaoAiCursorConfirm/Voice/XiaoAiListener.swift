@@ -3,13 +3,13 @@ import Foundation
 
 @MainActor
 final class XiaoAiListener: NSObject, ObservableObject, NSSpeechRecognizerDelegate {
-    static let shared = XiaoAiListener()
+    nonisolated(unsafe) static let shared = XiaoAiListener()
 
     @Published private(set) var isListening = false
     @Published private(set) var lastHeard = ""
 
-    private var recognizer: NSSpeechRecognizer?
-    private var continuation: CheckedContinuation<String?, Never>?
+    fileprivate var recognizer: NSSpeechRecognizer?
+    fileprivate var continuation: CheckedContinuation<String?, Never>?
     private var timeoutTask: Task<Void, Never>?
 
     private let approveWords = ["确认", "好的", "可以", "同意", "行", "批准", "运行", "允许", "好", "是", "小爱确认"]
@@ -75,9 +75,10 @@ final class XiaoAiListener: NSObject, ObservableObject, NSSpeechRecognizerDelega
 
     nonisolated func speechRecognizer(_ sender: NSSpeechRecognizer, didRecognizeCommand command: String) {
         Task { @MainActor in
-            self.lastHeard = command
-            if let continuation = self.continuation {
-                self.continuation = nil
+            let listener = XiaoAiListener.shared
+            listener.lastHeard = command
+            if let continuation = listener.continuation {
+                listener.continuation = nil
                 continuation.resume(returning: command)
             }
         }

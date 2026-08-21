@@ -3,7 +3,7 @@ import Foundation
 
 @MainActor
 final class XiaoAiSpeaker: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
-    static let shared = XiaoAiSpeaker()
+    nonisolated(unsafe) static let shared = XiaoAiSpeaker()
 
     @Published private(set) var isSpeaking = false
 
@@ -58,15 +58,15 @@ final class XiaoAiSpeaker: NSObject, ObservableObject, AVSpeechSynthesizerDelega
 
     nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         Task { @MainActor in
-            self.isSpeaking = false
-            self.finish()
+            XiaoAiSpeaker.shared.isSpeaking = false
+            XiaoAiSpeaker.shared.finish()
         }
     }
 
     nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         Task { @MainActor in
-            self.isSpeaking = false
-            self.finish()
+            XiaoAiSpeaker.shared.isSpeaking = false
+            XiaoAiSpeaker.shared.finish()
         }
     }
 

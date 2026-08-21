@@ -3,7 +3,7 @@ import ServiceManagement
 
 @MainActor
 final class AppSettings: ObservableObject {
-    static let shared = AppSettings()
+    nonisolated(unsafe) static let shared = AppSettings()
 
     @Published var port: Int {
         didSet { UserDefaults.standard.set(port, forKey: "port") }

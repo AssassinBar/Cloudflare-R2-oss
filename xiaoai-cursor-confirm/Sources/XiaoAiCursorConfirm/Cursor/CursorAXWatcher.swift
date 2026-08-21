@@ -3,7 +3,7 @@ import ApplicationServices
 
 @MainActor
 final class CursorAXWatcher: ObservableObject {
-    static let shared = CursorAXWatcher()
+    nonisolated(unsafe) static let shared = CursorAXWatcher()
 
     @Published private(set) var isCursorRunning = false
     @Published private(set) var lastDialog = ""
@@ -19,9 +19,9 @@ final class CursorAXWatcher: ObservableObject {
     func start() {
         stop()
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { _ in
             Task { @MainActor in
-                self?.refresh()
+                CursorAXWatcher.shared.refresh()
             }
         }
     }
