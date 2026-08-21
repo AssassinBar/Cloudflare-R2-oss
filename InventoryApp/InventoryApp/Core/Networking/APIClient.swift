@@ -65,7 +65,6 @@ final class APIClient: @unchecked Sendable {
     private let session: URLSession
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
-    private let lock = NSLock()
     private var authToken: String?
 
     init(baseURL: URL, session: URLSession = .shared) {
@@ -84,9 +83,7 @@ final class APIClient: @unchecked Sendable {
     }
 
     func setAuthToken(_ token: String?) {
-        lock.lock()
         authToken = token
-        lock.unlock()
     }
 
     func send<R: APIRequest>(_ request: R) async throws -> R.Response {
@@ -109,11 +106,7 @@ final class APIClient: @unchecked Sendable {
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        lock.lock()
-        let token = authToken
-        lock.unlock()
-
-        if let token {
+        if let token = authToken {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 

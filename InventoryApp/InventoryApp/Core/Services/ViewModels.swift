@@ -2,7 +2,6 @@ import Foundation
 import Observation
 
 @Observable
-@MainActor
 final class DashboardViewModel {
     private let service: any InventoryServicing
 
@@ -14,6 +13,7 @@ final class DashboardViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil
@@ -27,7 +27,6 @@ final class DashboardViewModel {
 }
 
 @Observable
-@MainActor
 final class ProductsViewModel {
     private let service: any InventoryServicing
 
@@ -40,6 +39,7 @@ final class ProductsViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil
@@ -54,7 +54,6 @@ final class ProductsViewModel {
 }
 
 @Observable
-@MainActor
 final class PurchasesViewModel {
     private let service: any InventoryServicing
 
@@ -66,6 +65,7 @@ final class PurchasesViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil
@@ -80,7 +80,6 @@ final class PurchasesViewModel {
 }
 
 @Observable
-@MainActor
 final class SalesViewModel {
     private let service: any InventoryServicing
 
@@ -92,6 +91,7 @@ final class SalesViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil
@@ -106,7 +106,6 @@ final class SalesViewModel {
 }
 
 @Observable
-@MainActor
 final class InventoryViewModel {
     private let service: any InventoryServicing
 
@@ -119,6 +118,7 @@ final class InventoryViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil
@@ -135,7 +135,6 @@ final class InventoryViewModel {
 }
 
 @Observable
-@MainActor
 final class PartnersViewModel {
     private let service: any InventoryServicing
 
@@ -148,6 +147,7 @@ final class PartnersViewModel {
         self.service = service
     }
 
+    @MainActor
     func load() async {
         isLoading = true
         errorMessage = nil

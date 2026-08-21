@@ -1,7 +1,6 @@
 import Foundation
 
 /// Local mock backend so the UI framework runs without a server.
-@MainActor
 final class MockInventoryService: InventoryServicing, @unchecked Sendable {
     private let products: [Product]
     private let purchases: [PurchaseOrder]

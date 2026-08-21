@@ -14,7 +14,6 @@ protocol InventoryServicing: AnyObject, Sendable {
 }
 
 enum ServiceFactory {
-    @MainActor
     static func makeInventoryService() -> any InventoryServicing {
         switch AppEnvironment.current {
         case .mock:
