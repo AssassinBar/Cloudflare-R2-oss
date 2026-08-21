@@ -8,14 +8,14 @@
 - iOS 17.0+
 - Swift 5.9+
 
-## 打开工程
+## 运行前（很重要）
 
-```bash
-cd InventoryApp
-open InventoryApp.xcodeproj
-```
+1. 顶部运行目标先选 **iPhone 模拟器**（不要选真机 `OneBar`，除非已配置签名）
+2. 左侧点开工程 Target → **Signing & Capabilities**
+3. 勾选 **Automatically manage signing**，在 **Team** 里选你的 Apple ID 团队
+4. 再按 ⌘R 运行
 
-选择模拟器或真机，运行即可。首次打开请在 Signing 中选择你的 Team。
+若仍报错：点 Xcode 顶部红色错误数字，把完整错误文案发我。
 
 ## 功能模块
 
