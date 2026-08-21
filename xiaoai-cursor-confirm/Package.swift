@@ -17,14 +17,16 @@ let package = Package(
                 "Resources/Info.plist",
                 "Resources/XiaoAiCursorConfirm.entitlements"
             ],
+            swiftSettings: [
+                .unsafeFlags(["-parse-as-library"])
+            ],
             linkerSettings: [
                 .linkedFramework("AppKit"),
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("Network"),
                 .linkedFramework("ApplicationServices"),
-                .linkedFramework("ServiceManagement"),
-                .linkedFramework("CryptoKit")
+                .linkedFramework("ServiceManagement")
             ]
         )
     ]
