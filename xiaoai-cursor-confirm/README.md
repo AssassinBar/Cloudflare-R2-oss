@@ -38,7 +38,9 @@ chmod +x scripts/install-macos.sh 编译.command
 cd Cloudflare-R2-oss
 git fetch origin cursor/macos-xiaoai-confirm-29b2
 git checkout cursor/macos-xiaoai-confirm-29b2
+git pull origin cursor/macos-xiaoai-confirm-29b2
 cd xiaoai-cursor-confirm
+chmod +x scripts/install-macos.sh
 ./scripts/install-macos.sh
 ```
 
